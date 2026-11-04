@@ -1,108 +1,334 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KronoJules | Alta Relojería</title>
+    <title>KronoJules | Sanctuary of High Horology & Vault Management</title>
+    <!-- Google Fonts: Cinzel for Hellenic Royalty & Inter for Modern Precision -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;600&display=swap');
-
+        /* ==========================================================================
+           DESIGN TOKENS - KRONOJULES AZUL REY & ORO PULIDO
+           ========================================================================== */
         :root {
-            --bg-color: #061024;
-            --surface-color: #0b1d3a;
-            --surface-hover: #0f2b5c;
-            --text-main: #f0f4f8;
-            --text-muted: #a0aec0;
+            /* Theme: Azul Rey Olimpo (Dark Royal Blue & Gold) */
+            --bg-body: #061024;
+            --bg-body-gradient: radial-gradient(circle at 50% 0%, #0d234d 0%, #061024 85%);
+            --bg-card: rgba(11, 29, 58, 0.85);
+            --bg-card-solid: #0b1d3a;
+            --bg-sidebar: #040a18;
+            --bg-header: rgba(6, 16, 36, 0.92);
+            --bg-input: #0f274d;
+            --bg-modal-overlay: rgba(3, 8, 20, 0.88);
+            
+            /* Gold Accent Palette */
             --gold-primary: #d4af37;
-            --gold-hover: #f1d570;
-            --danger: #e53e3e;
-            --success: #38a169;
-            --font-serif: 'Cinzel', serif;
-            --font-sans: 'Inter', sans-serif;
+            --gold-light: #fef1c7;
+            --gold-dark: #a1801f;
+            --gold-hover: #e5c158;
+            --gold-gradient: linear-gradient(135deg, #fef1c7 0%, #d4af37 50%, #997819 100%);
+            --gold-border: rgba(212, 175, 55, 0.35);
+            --gold-glow: 0 0 20px rgba(212, 175, 55, 0.28);
+            
+            /* Royal Blue Accents */
+            --royal-blue: #002366;
+            --royal-light: #163773;
+            --royal-badge: rgba(37, 99, 235, 0.25);
+            
+            --text-main: #f0f4f9;
+            --text-muted: #8ca3c7;
+            --text-gold: #f3e5ab;
+            
+            --border-color: rgba(212, 175, 55, 0.20);
+            --glass-bg: rgba(212, 175, 55, 0.04);
+            
+            --status-stock: #10b981;
+            --status-stock-bg: rgba(16, 185, 129, 0.15);
+            --status-reserved: #f59e0b;
+            --status-reserved-bg: rgba(245, 158, 11, 0.15);
+            --status-sold: #ef4444;
+            --status-sold-bg: rgba(239, 68, 68, 0.15);
+            --status-service: #a855f7;
+            --status-service-bg: rgba(168, 85, 247, 0.15);
+            
+            --shadow-lux: 0 12px 35px -5px rgba(0, 0, 0, 0.75), 0 0 15px rgba(212, 175, 55, 0.08);
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            
+            --sidebar-width: 275px;
+            --header-height: 78px;
+            --transition-speed: 0.3s;
         }
 
+        [data-theme="light"] {
+            /* Theme: Mármol Helénico (Hellenic White Marble & Gold) */
+            --bg-body: #f4f7fb;
+            --bg-body-gradient: radial-gradient(circle at 50% 0%, #ffffff 0%, #e8eeef 100%);
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --bg-card-solid: #ffffff;
+            --bg-sidebar: #0a192f;
+            --bg-header: rgba(244, 247, 251, 0.95);
+            --bg-input: #ffffff;
+            --bg-modal-overlay: rgba(10, 25, 47, 0.75);
+            
+            --gold-primary: #b89128;
+            --gold-light: #7a5c0b;
+            --gold-dark: #8c6a15;
+            --gold-border: rgba(184, 145, 40, 0.35);
+            --gold-glow: 0 0 15px rgba(184, 145, 40, 0.18);
+            
+            --text-main: #0c1829;
+            --text-muted: #546882;
+            --text-gold: #8c6a15;
+            
+            --border-color: rgba(10, 25, 47, 0.14);
+            --shadow-lux: 0 10px 30px -5px rgba(10, 25, 47, 0.12), 0 0 12px rgba(184, 145, 40, 0.12);
+        }
+
+        /* ==========================================================================
+           RESET & TYPOGRAPHY
+           ========================================================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: auto; /* Corrección de interactividad */
+            font-family: 'Inter', system-ui, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: auto;
         }
 
         body {
-            font-family: var(--font-sans);
-            background-color: var(--bg-color);
+            background: var(--bg-body-gradient);
+            background-color: var(--bg-body);
             color: var(--text-main);
             display: flex;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background var(--transition-speed), color var(--transition-speed);
         }
 
-        /* Tipografía y Textos Dorados */
-        h1, h2, h3, h4, .brand-logo {
-            font-family: var(--font-serif);
-            color: var(--gold-primary);
+        h1, h2, h3, h4, .brand-title, .font-cinzel {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
         }
 
-        /* Sidebar (Menú Lateral) */
-        .sidebar {
-            width: 260px;
-            background-color: var(--surface-color);
-            border-right: 2px solid var(--gold-primary);
+        /* Greek Key Meander Border Utilities */
+        .meander-top-border {
+            position: relative;
+        }
+        .meander-top-border::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='4' viewBox='0 0 16 4'%3E%3Cpath d='M0 4V0h16v4h-2V2H2v2H0zm4-2h8v2H4V2z' fill='%23d4af37' fill-opacity='0.75'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+        }
+
+        .meander-divider {
+            height: 6px;
+            width: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='6' viewBox='0 0 16 6'%3E%3Cpath d='M0 6V0h16v6h-2V2H2v4H0zm4-2h8v2H4V4z' fill='%23d4af37' fill-opacity='0.55'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            margin: 1.2rem 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 4px; }
+
+        /* ==========================================================================
+           SIDEBAR NAVIGATION & OVERLAY
+           ========================================================================== */
+        aside.sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease;
-            z-index: 1000;
+            position: fixed;
+            top: 0; bottom: 0; left: 0;
+            z-index: 100;
+            border-right: 1px solid var(--gold-border);
+            transition: transform var(--transition-speed) ease;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.6);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(4px);
+            z-index: 95;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        body.sidebar-open .sidebar-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .sidebar-header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 1.4rem;
+            border-bottom: 1px solid var(--gold-border);
         }
 
         .brand-logo {
-            padding: 20px;
-            text-align: center;
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-        }
-
-        .nav-links {
-            list-style: none;
-            flex: 1;
-            padding: 20px 0;
-            overflow-y: auto;
-        }
-
-        .nav-links li {
-            padding: 15px 25px;
-            cursor: pointer;
-            transition: background 0.2s, border-left 0.2s;
-            border-left: 4px solid transparent;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 0.85rem;
+            text-decoration: none;
+            color: #fff;
         }
 
-        .nav-links li:hover, .nav-links li.active {
-            background-color: var(--surface-hover);
-            border-left: 4px solid var(--gold-primary);
-            color: var(--gold-primary);
+        .brand-emblem {
+            width: 44px;
+            height: 44px;
+            background: var(--gold-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #061024;
+            box-shadow: var(--gold-glow);
+            flex-shrink: 0;
+            border: 2px solid #ffffff;
         }
 
-        /* Área Principal */
-        .main-content {
+        .brand-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .brand-subtitle {
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 3px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 1.5rem 0.9rem;
             flex: 1;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            gap: 0.45rem;
+            overflow-y: auto;
         }
 
-        /* Topbar */
-        .topbar {
-            height: 70px;
-            background-color: var(--surface-color);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        .menu-item a {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 0 30px;
+            gap: 0.9rem;
+            padding: 0.88rem 1.1rem;
+            color: #92a4c0;
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all var(--transition-speed);
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .menu-item a:hover {
+            color: #ffffff;
+            background: rgba(212, 175, 55, 0.1);
+            border-color: rgba(212, 175, 55, 0.25);
+            transform: translateX(3px);
+        }
+
+        .menu-item.active a {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.22) 0%, rgba(13, 35, 77, 0.4) 100%);
+            color: var(--gold-light);
+            border: 1px solid var(--gold-border);
+            font-weight: 700;
+            box-shadow: var(--gold-glow);
+        }
+
+        .menu-item.active a::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 15%; bottom: 15%;
+            width: 4px;
+            background: var(--gold-gradient);
+            border-radius: 2px;
+        }
+
+        .menu-item svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            color: var(--gold-primary);
+        }
+
+        .admin-only-badge {
+            margin-left: auto;
+            font-size: 0.62rem;
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            padding: 0.15rem 0.45rem;
+            border-radius: 9999px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-footer {
+            padding: 1.2rem 1.4rem;
+            border-top: 1px solid var(--gold-border);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.2);
+        }
+
+        /* ==========================================================================
+           MAIN CONTENT & TOP HEADER
+           ========================================================================== */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        header.top-header {
+            height: var(--header-height);
+            background-color: var(--bg-header);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--gold-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .mobile-menu-btn {
@@ -110,489 +336,1522 @@
             background: none;
             border: none;
             color: var(--gold-primary);
-            font-size: 1.5rem;
             cursor: pointer;
+            padding: 0.4rem;
         }
 
-        .topbar-actions {
+        .page-title-heading {
+            font-size: 1.45rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .header-right {
             display: flex;
-            gap: 15px;
             align-items: center;
+            gap: 1.1rem;
         }
 
-        .btn-gold {
-            background: linear-gradient(135deg, #d4af37, #aa8623);
-            color: #000;
+        /* Currency Selector */
+        .currency-selector {
+            display: flex;
+            background: var(--bg-input);
+            border: 1px solid var(--gold-border);
+            border-radius: 9999px;
+            padding: 3px;
+        }
+
+        .currency-btn {
+            background: transparent;
             border: none;
-            padding: 8px 16px;
-            font-family: var(--font-serif);
-            font-weight: 600;
+            color: var(--text-muted);
+            padding: 0.38rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 700;
             cursor: pointer;
-            border-radius: 4px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.25s;
         }
 
-        .btn-gold:hover {
+        .currency-btn.active {
+            background: var(--gold-gradient);
+            color: #061024;
+            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Role Pill & Login Controls */
+        .role-pill {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            border: 1px solid var(--gold-border);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .role-pill.admin { background: rgba(212, 175, 55, 0.18); color: var(--gold-light); }
+        .role-pill.user { background: rgba(37, 99, 235, 0.18); color: #60a5fa; border-color: rgba(37, 99, 235, 0.4); }
+
+        .header-icon-btn {
+            background: var(--bg-input);
+            border: 1px solid var(--gold-border);
+            color: var(--gold-primary);
+            width: 42px; height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-speed);
+        }
+
+        .header-icon-btn:hover {
+            background: rgba(212, 175, 55, 0.15);
+            box-shadow: var(--gold-glow);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
         }
 
-        .btn-outline {
+        /* User Profile Pill (CEO Jules Ortiz) */
+        .user-profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.35rem 0.85rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--gold-border);
+            border-radius: 9999px;
+            cursor: pointer;
+        }
+
+        .user-avatar-crown {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            color: #061024;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.85rem;
+            box-shadow: var(--gold-glow);
+            border: 2px solid #ffffff;
+        }
+
+        .user-meta-name { font-size: 0.85rem; font-weight: 700; }
+        .user-meta-role { font-size: 0.7rem; color: var(--gold-primary); font-weight: 600; }
+
+        /* ==========================================================================
+           VIEWS & CONTENT LAYOUT
+           ========================================================================== */
+        main.content-area { padding: 2rem; flex: 1; }
+        .view-section { display: none; animation: fadeIn 0.35s ease; }
+        .view-section.active-view { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ==========================================================================
+           KPI METRICS (OLYMPUS & VAULT)
+           ========================================================================== */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--gold-border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lux);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: var(--gold-gradient);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 15px 35px -5px rgba(0,0,0,0.8), var(--gold-glow);
+        }
+
+        .kpi-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.9rem; }
+        .kpi-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); font-weight: 700; }
+        .kpi-icon-box {
+            width: 44px; height: 44px; border-radius: var(--radius-md);
+            background: rgba(212, 175, 55, 0.12); border: 1px solid var(--gold-border);
+            color: var(--gold-primary); display: flex; align-items: center; justify-content: center;
+        }
+
+        .kpi-value { font-size: 2rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin-bottom: 0.4rem; font-family: 'Cinzel', serif; }
+        .kpi-subtext { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; }
+
+        /* Buttons & Controls */
+        .btn-gold {
+            background: var(--gold-gradient);
+            color: #061024;
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1.4rem;
+            font-weight: 800;
+            font-size: 0.88rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 18px rgba(212, 175, 55, 0.35);
+            transition: all var(--transition-speed);
+        }
+
+        .btn-gold:hover { filter: brightness(1.12); transform: translateY(-2px); }
+
+        .btn-outline-gold {
             background: transparent;
             color: var(--gold-primary);
-            border: 1px solid var(--gold-primary);
-            padding: 8px 16px;
+            border: 1px solid var(--gold-border);
+            border-radius: var(--radius-sm);
+            padding: 0.7rem 1.25rem;
+            font-weight: 700;
+            font-size: 0.88rem;
             cursor: pointer;
-            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all var(--transition-speed);
         }
 
-        /* Secciones de Contenido */
-        .content-section {
-            display: none;
-            padding: 30px;
-            overflow-y: auto;
-            height: calc(100vh - 70px);
-        }
-        .content-section.active { display: block; }
+        .btn-outline-gold:hover { background: rgba(212, 175, 55, 0.12); border-color: var(--gold-primary); }
 
-        /* Catálogo Grid */
-        .catalog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.85rem;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
+        .btn-danger:hover { background: #ef4444; color: #fff; }
+
+        /* Controls Bar */
+        .controls-card {
+            background: var(--bg-card);
+            border: 1px solid var(--gold-border);
+            border-radius: var(--radius-md);
+            padding: 1.3rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.2rem;
+            box-shadow: var(--shadow-lux);
+        }
+
+        .search-input-group { position: relative; flex: 1; min-width: 270px; }
+        .search-input-group input {
+            width: 100%; background: var(--bg-input); border: 1px solid var(--gold-border);
+            border-radius: var(--radius-sm); padding: 0.7rem 0.9rem 0.7rem 2.5rem;
+            color: var(--text-main); font-size: 0.9rem; outline: none;
+        }
+        .search-input-group svg { position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%); color: var(--gold-primary); }
+
+        .filter-select {
+            background: var(--bg-input); border: 1px solid var(--gold-border);
+            color: var(--text-main); padding: 0.7rem 1rem; border-radius: var(--radius-sm);
+            font-size: 0.88rem; outline: none; cursor: pointer;
+        }
+
+        /* Watch Cards Grid */
+        .watch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(315px, 1fr)); gap: 1.6rem; }
         .watch-card {
-            background-color: var(--surface-color);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s;
+            background: var(--bg-card); border: 1px solid var(--gold-border);
+            border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lux);
+            display: flex; flex-direction: column; transition: all 0.3s ease;
         }
+        .watch-card:hover { transform: translateY(-6px); border-color: var(--gold-primary); box-shadow: 0 18px 40px -5px rgba(0,0,0,0.8), var(--gold-glow); }
 
-        .watch-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold-primary);
-        }
+        .watch-card-header { padding: 1.5rem; display: flex; justify-content: space-between; align-items: flex-start; }
+        .watch-brand { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-primary); font-weight: 800; }
+        .watch-model { font-size: 1.3rem; font-weight: 700; color: var(--text-main); font-family: 'Cinzel', serif; }
 
-        .watch-img-container {
-            width: 100%;
-            height: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+        .status-pill { padding: 0.28rem 0.75rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; }
+        .status-stock { background: var(--status-stock-bg); color: var(--status-stock); border: 1px solid rgba(16, 185, 129, 0.4); }
+        .status-reserved { background: var(--status-reserved-bg); color: var(--status-reserved); border: 1px solid rgba(245, 158, 11, 0.4); }
+        .status-sold { background: var(--status-sold-bg); color: var(--status-sold); border: 1px solid rgba(239, 68, 68, 0.4); }
+        .status-service { background: var(--status-service-bg); color: var(--status-service); border: 1px solid rgba(168, 85, 247, 0.4); }
 
-        .watch-img-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
+        .watch-hero-icon { height: 130px; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+        .watch-hero-icon img { max-height: 110px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5)); }
+        .watch-hero-icon svg { width: 80px; height: 80px; filter: drop-shadow(0 6px 15px rgba(212, 175, 55, 0.3)); }
 
-        .fallback-icon {
-            font-size: 4rem;
-            color: var(--gold-primary);
-            opacity: 0.5;
-            display: none;
-        }
+        .watch-card-body { padding: 0 1.5rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .watch-specs-list { display: flex; flex-direction: column; gap: 0.45rem; padding: 0.8rem 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); margin-bottom: 1.2rem; font-size: 0.82rem; }
+        .spec-row { display: flex; justify-content: space-between; }
+        .spec-label { color: var(--text-muted); }
+        .spec-value { font-weight: 600; color: var(--text-main); }
+        .watch-card-footer { display: flex; align-items: center; justify-content: space-between; }
+        .watch-price { font-size: 1.4rem; font-weight: 700; color: var(--gold-light); font-family: 'Cinzel', serif; }
 
-        .price-tag {
-            color: var(--gold-primary);
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin: 10px 0;
-        }
-
-        /* Kanban Taller Krono */
-        .kanban-board {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-            height: 70vh;
-            overflow-x: auto;
-            padding-bottom: 20px;
-        }
-
-        .kanban-col {
-            min-width: 250px;
-            background-color: var(--surface-color);
-            border-top: 4px solid var(--gold-primary);
-            border-radius: 6px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .kanban-item {
-            background-color: var(--bg-color);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            padding: 15px;
-            border-radius: 4px;
-            cursor: grab;
-        }
-
-        .kanban-item.no-drag {
-            cursor: default;
-        }
-
-        /* Modales */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            pointer-events: none; /* Previene bloqueos cuando está oculto */
-            transition: opacity 0.3s;
-        }
+        /* ==========================================================================
+           KANBAN TALLER DEL OLIMPO (5 HELENIC STAGES)
+           ========================================================================== */
+        .kanban-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.2rem; overflow-x: auto; padding-bottom: 1rem; }
+        @media (max-width: 1300px) { .kanban-grid { grid-template-columns: repeat(5, minmax(260px, 1fr)); } }
         
-        .modal-overlay.active {
+        .kanban-col { background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: var(--radius-md); padding: 1.1rem; min-height: 520px; display: flex; flex-direction: column; }
+        .kanban-col-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 0.9rem; margin-bottom: 1rem; border-bottom: 2px solid var(--gold-border); }
+        .kanban-col-title { font-size: 0.85rem; font-weight: 700; font-family: 'Cinzel', serif; }
+
+        .kanban-card { background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem; cursor: grab; transition: all 0.25s; }
+        .kanban-card:hover { border-color: var(--gold-primary); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), var(--gold-glow); transform: translateY(-2px); }
+        .kanban-card-ref { font-size: 0.7rem; color: var(--gold-primary); font-weight: 800; margin-bottom: 0.3rem; }
+        .kanban-card-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.5rem; }
+        .kanban-card-meta { font-size: 0.78rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.2rem; margin-bottom: 0.8rem; }
+        .kanban-card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 0.6rem; border-top: 1px dashed var(--border-color); }
+
+        .kanban-nav-btn { background: var(--bg-input); border: 1px solid var(--gold-border); color: var(--gold-primary); width: 28px; height: 28px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 700; }
+        .kanban-nav-btn:hover { background: var(--gold-primary); color: #061024; }
+
+        /* ==========================================================================
+           EMPLOYEE TABLE & MONEY MANAGEMENT (ADMIN EXCLUSIVE)
+           ========================================================================== */
+        .data-table-wrap { width: 100%; overflow-x: auto; }
+        table.data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.88rem; }
+        table.data-table th { padding: 0.9rem 1rem; background: var(--bg-input); color: var(--gold-primary); font-family: 'Cinzel', serif; font-size: 0.8rem; border-bottom: 1px solid var(--gold-border); text-transform: uppercase; }
+        table.data-table td { padding: 1rem; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        table.data-table tbody tr:hover { background: rgba(212, 175, 55, 0.04); }
+
+        /* ==========================================================================
+           CERTIFICATE OF AUTHENTICITY FRAME (GOLD WAX SEAL)
+           ========================================================================== */
+        .cert-card-frame {
+            background: linear-gradient(135deg, #0b1d3a 0%, #061024 100%);
+            border: 3px solid var(--gold-primary);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 30px rgba(212, 175, 55, 0.12);
+            position: relative;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .gold-wax-seal {
+            width: 82px; height: 82px;
+            background: radial-gradient(circle at 30% 30%, #fef1c7, #d4af37 60%, #997819 100%);
+            border-radius: 50%;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 25px rgba(212, 175, 55, 0.5);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #061024; font-weight: 900; font-size: 0.65rem; text-align: center;
+            letter-spacing: 1px; border: 3px solid #ffffff; transform: rotate(-8deg);
+        }
+
+        /* ==========================================================================
+           MODALS & OVERLAYS (SAFE POINTER-EVENTS & Z-INDEX)
+           ========================================================================== */
+        .modal-backdrop {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-modal-overlay);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center; justify-content: center;
+            z-index: 1000; padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        .modal-backdrop.active {
             opacity: 1;
+            visibility: visible;
             pointer-events: auto;
         }
 
-        .modal-content {
-            background-color: var(--surface-color);
-            border: 2px solid var(--gold-primary);
-            padding: 30px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
+        .modal-box {
+            background: var(--bg-card-solid);
+            border: 2px solid var(--gold-border);
+            border-radius: var(--radius-lg);
+            width: 100%; max-width: 580px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.95), var(--gold-glow);
+            overflow: hidden; display: flex; flex-direction: column; max-height: 90vh;
+            transform: scale(0.96);
+            transition: transform 0.25s ease;
+        }
+        .modal-backdrop.active .modal-box {
+            transform: scale(1);
         }
 
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            margin: 15px 0;
-            background: var(--bg-color);
-            border: 1px solid var(--gold-primary);
-            color: white;
-            border-radius: 4px;
+        .modal-header {
+            padding: 1.4rem 1.8rem; border-bottom: 1px solid var(--gold-border);
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(212, 175, 55, 0.05);
         }
 
-        /* Responsividad Móvil */
-        @media (max-width: 768px) {
-            .sidebar {
-                position: absolute;
-                transform: translateX(-100%);
-                height: 100vh;
-            }
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            .mobile-menu-btn {
-                display: block;
-            }
-            .main-content {
-                width: 100vw;
-            }
-        }
+        .modal-title { font-size: 1.3rem; font-weight: 700; font-family: 'Cinzel', serif; }
+        .modal-close-btn { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.5rem; }
+        .modal-close-btn:hover { color: var(--gold-primary); }
 
-        .hidden { display: none !important; }
+        .modal-body { padding: 1.8rem; overflow-y: auto; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+        .form-group.full-width { grid-column: span 2; }
+
+        .form-label { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-input, .form-select, .form-textarea {
+            background: var(--bg-input); border: 1px solid var(--gold-border);
+            border-radius: var(--radius-sm); padding: 0.7rem 0.9rem;
+            color: var(--text-main); font-size: 0.9rem; outline: none;
+        }
+        .form-input:focus, .form-select:focus { border-color: var(--gold-primary); box-shadow: 0 0 10px rgba(212, 175, 55, 0.25); }
+
+        .modal-footer { padding: 1.2rem 1.8rem; border-top: 1px solid var(--gold-border); display: flex; justify-content: flex-end; gap: 0.8rem; background: rgba(0,0,0,0.25); }
+
+        /* Toast Container */
+        .toast-wrap { position: fixed; bottom: 25px; right: 25px; z-index: 2000; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
+        .toast-msg {
+            background: var(--bg-sidebar); color: #fff;
+            border-left: 4px solid var(--gold-primary); border: 1px solid var(--gold-border);
+            padding: 1rem 1.4rem; border-radius: var(--radius-md);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.8), var(--gold-glow);
+            display: flex; align-items: center; gap: 0.85rem; font-size: 0.88rem;
+            pointer-events: auto;
+            animation: toastIn 0.3s forwards;
+        }
+        @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            aside.sidebar { transform: translateX(-100%); }
+            body.sidebar-open aside.sidebar { transform: translateX(0); }
+            .main-wrapper { margin-left: 0; }
+            .mobile-menu-btn { display: block; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
+            .dash-details-grid { grid-template-columns: 1fr !important; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Menú Lateral -->
-    <nav class="sidebar" id="sidebar">
-        <div class="brand-logo">KRONOJULES</div>
-        <ul class="nav-links">
-            <li class="active" onclick="switchTab('dashboard')">Dashboard Krono</li>
-            <li onclick="switchTab('catalog')">Catálogo Exclusivo</li>
-            <li onclick="switchTab('workshop')">Taller Krono</li>
-            <li class="admin-only hidden" onclick="switchTab('vault')">Bóveda Krono</li>
-            <li class="admin-only hidden" onclick="switchTab('employees')">Plantilla Personal</li>
-        </ul>
-    </nav>
+    <!-- Sidebar Backdrop Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-    <!-- Contenido Principal -->
-    <main class="main-content">
-        <header class="topbar">
-            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
-            <div class="topbar-actions">
-                <button class="btn-outline" onclick="toggleCurrency()" id="currencyBtn">Divisa: USD</button>
-                <button class="btn-gold" onclick="openLoginModal()" id="roleBtn">Rol: Cliente (Vista)</button>
+    <!-- ==========================================================================
+         SIDEBAR NAVIGATION
+         ========================================================================== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header meander-top-border">
+            <a href="#" class="brand-logo">
+                <div class="brand-emblem">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 4l3 12h14l3-12-6 7-4-5-4 5-6-7z"/><circle cx="12" cy="4" r="1"/></svg>
+                </div>
+                <div>
+                    <span class="brand-title">KronoJules</span>
+                    <span class="brand-subtitle">CEO: JULES ORTIZ</span>
+                </div>
+            </a>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="menu-item active" data-view="view-dashboard">
+                <a href="#dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Dashboard Crono</span>
+                </a>
+            </li>
+            <li class="menu-item" data-view="view-catalogo">
+                <a href="#catalogo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>Catálogo de Relojes</span>
+                </a>
+            </li>
+            <li class="menu-item" data-view="view-servicio">
+                <a href="#servicio">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    <span>Taller Crono</span>
+                </a>
+            </li>
+            <li class="menu-item" data-view="view-finanzas">
+                <a href="#finanzas">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    <span>Gestión Dinero & Bóveda</span>
+                    <span class="admin-only-badge">ADMIN</span>
+                </a>
+            </li>
+            <li class="menu-item" data-view="view-empleados">
+                <a href="#empleados">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>Plantilla de Empleados</span>
+                    <span class="admin-only-badge">ADMIN</span>
+                </a>
+            </li>
+            <li class="menu-item" data-view="view-certificados">
+                <a href="#certificados">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 11 12 14 22 4"/></svg>
+                    <span>Certificados Helénicos</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <span>KronoJules Haute Horlogerie</span>
+            <div style="color:var(--gold-primary); font-weight:700; margin-top:2px;">Garantía Real • Jules Ortiz</div>
+        </div>
+    </aside>
+
+    <!-- ==========================================================================
+         MAIN WRAPPER & HEADER
+         ========================================================================== -->
+    <div class="main-wrapper">
+        <header class="top-header">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <h1 class="page-title-heading" id="pageTitle">Dashboard Crono</h1>
+            </div>
+
+            <div class="header-right">
+                <!-- Currency Selector (USD / MXN) -->
+                <div class="currency-selector">
+                    <button class="currency-btn active" id="btnUSD" onclick="setCurrency('USD')">USD ($)</button>
+                    <button class="currency-btn" id="btnMXN" onclick="setCurrency('MXN')">MXN ($)</button>
+                </div>
+
+                <!-- Theme Switcher -->
+                <button class="header-icon-btn" id="themeBtn" title="Cambiar Tema (Azul Rey / Mármol Helénico)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+                </button>
+
+                <!-- Current Active Role Display & Switcher -->
+                <div class="role-pill user" id="rolePill" onclick="openLoginModal()" title="Hacer clic para cambiar de rol o autenticar como Admin">
+                    <span id="roleLabel">ROL: USUARIO</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+
+                <!-- User Profile Header (CEO Jules Ortiz) -->
+                <div class="user-profile-badge" onclick="openLoginModal()">
+                    <div class="user-avatar-crown">JO</div>
+                    <div style="display:flex; flex-direction:column;">
+                        <span class="user-meta-name">Jules Ortiz</span>
+                        <span class="user-meta-role">CEO & Founder KronoJules</span>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <!-- Secciones -->
-        <div id="dashboard" class="content-section active">
-            <h2>Dashboard Krono</h2>
-            <p style="margin-top:10px; color: var(--text-muted);">Bienvenido al sistema de control de alta relojería.</p>
-            <div style="margin-top: 30px; display: flex; gap: 20px; flex-wrap: wrap;">
-                <div class="kanban-col" style="flex:1; text-align:center;">
-                    <h3>Inventario Activo</h3>
-                    <p style="font-size: 2rem; color: var(--gold-primary); margin-top:10px;">4 Piezas</p>
-                </div>
-                <div class="kanban-col admin-only hidden" style="flex:1; text-align:center;">
-                    <h3>Valor Total (Bóveda)</h3>
-                    <p style="font-size: 2rem; color: var(--gold-primary); margin-top:10px;" class="price" data-usd="245000">$245,000</p>
-                </div>
-            </div>
-        </div>
+        <!-- ==========================================================================
+             CONTENT AREA & VIEWS
+             ========================================================================== -->
+        <main class="content-area">
 
-        <div id="catalog" class="content-section">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2>Catálogo Exclusivo</h2>
-                <button class="btn-gold employee-only hidden" onclick="alert('Función añadir pieza abierta')">+ Añadir Pieza</button>
-            </div>
-            
-            <div class="catalog-grid">
-                <!-- Reloj 1 -->
-                <div class="watch-card">
-                    <div class="watch-img-container">
-                        <img src="Day-Date 40 Olive.png" alt="Rolex Day-Date 40" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="fallback-icon">⌚</div>
+            <!-- 1. DASHBOARD VIEW -->
+            <section id="view-dashboard" class="view-section active-view">
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-head">
+                            <span class="kpi-title">Valor en Bóveda</span>
+                            <div class="kpi-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value" id="kpiVaultValue">$1,850,000</div>
+                        <div class="kpi-subtext"><span style="color:#10b981; font-weight:700;">+18.2%</span> Auditado por Jules Ortiz</div>
                     </div>
-                    <h3>Rolex Day-Date 40 Olive</h3>
-                    <div class="price-tag price" data-usd="42000">$42,000</div>
-                    <button class="btn-outline employee-only hidden">Marcar Vendido</button>
-                    <button class="btn-outline" style="width: 100%; margin-top: 10px;">Ver Certificado Krono</button>
-                </div>
-                <!-- Reloj 2 -->
-                <div class="watch-card">
-                    <div class="watch-img-container">
-                        <img src="Nautilus Jumbo.png" alt="Patek Philippe Nautilus" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="fallback-icon">⌚</div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-head">
+                            <span class="kpi-title">Caja Chica / Ventas Mes</span>
+                            <div class="kpi-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H3v5m18 0v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7m18 0H3m9 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value" id="kpiCashFlow">$420,000</div>
+                        <div class="kpi-subtext">Ingresos Operativos Recientes</div>
                     </div>
-                    <h3>Patek Philippe Nautilus Jumbo</h3>
-                    <div class="price-tag price" data-usd="125000">$125,000</div>
-                    <button class="btn-outline employee-only hidden">Marcar Vendido</button>
-                    <button class="btn-outline" style="width: 100%; margin-top: 10px;">Ver Certificado Krono</button>
-                </div>
-                <!-- Reloj 3 -->
-                <div class="watch-card">
-                    <div class="watch-img-container">
-                        <img src="Royal Oak Offshore.png" alt="Audemars Piguet Royal Oak" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="fallback-icon">⌚</div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-head">
+                            <span class="kpi-title">Piezas en Taller</span>
+                            <div class="kpi-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value" id="kpiWorkshopCount">4 Piezas</div>
+                        <div class="kpi-subtext">Calibración & Pulido Helénico</div>
                     </div>
-                    <h3>Audemars Piguet Royal Oak Offshore</h3>
-                    <div class="price-tag price" data-usd="48000">$48,000</div>
-                    <button class="btn-outline employee-only hidden">Marcar Vendido</button>
-                    <button class="btn-outline" style="width: 100%; margin-top: 10px;">Ver Certificado Krono</button>
-                </div>
-                <!-- Reloj 4 -->
-                <div class="watch-card">
-                    <div class="watch-img-container">
-                        <img src="Santos Skeleton.png" alt="Cartier Santos Skeleton" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="fallback-icon">⌚</div>
+
+                    <div class="kpi-card">
+                        <div class="kpi-head">
+                            <span class="kpi-title">Plantilla Empleados</span>
+                            <div class="kpi-icon-box">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                            </div>
+                        </div>
+                        <div class="kpi-value" id="kpiStaffCount">3 Activos</div>
+                        <div class="kpi-subtext">Supervisados por Jules Ortiz</div>
                     </div>
-                    <h3>Cartier Santos Skeleton</h3>
-                    <div class="price-tag price" data-usd="30000">$30,000</div>
-                    <button class="btn-outline employee-only hidden">Marcar Vendido</button>
-                    <button class="btn-outline" style="width: 100%; margin-top: 10px;">Ver Certificado Krono</button>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.6rem;" class="dash-details-grid">
+                    <div style="background:var(--bg-card); border:1px solid var(--gold-border); border-radius:var(--radius-lg); padding:1.6rem; box-shadow:var(--shadow-lux);">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h3 style="font-size:1.3rem; font-weight:700;">Selección Destacada KronoJules</h3>
+                            <button class="btn-outline-gold" onclick="switchView('view-catalogo')">Ver Catálogo</button>
+                        </div>
+                        <div class="meander-divider"></div>
+                        <div class="watch-grid" style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));" id="dashSpotlightGrid"></div>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--gold-border); border-radius:var(--radius-lg); padding:1.6rem; box-shadow:var(--shadow-lux); display:flex; flex-direction:column; justify-content:space-between;">
+                        <div>
+                            <h3 style="font-size:1.3rem; font-weight:700;">Bitácora Crono</h3>
+                            <div class="meander-divider"></div>
+                            <div style="display:flex; flex-direction:column; gap:1.1rem; font-size:0.85rem;">
+                                <div style="display:flex; gap:0.8rem;">
+                                    <div style="width:10px; height:10px; border-radius:50%; background:var(--gold-primary); margin-top:4px;"></div>
+                                    <div>
+                                        <strong>Jules Ortiz (CEO)</strong> autorizó auditoría de la Bóveda Central.
+                                        <div style="color:var(--text-muted); font-size:0.75rem;">Hace 15 min</div>
+                                    </div>
+                                </div>
+                                <div style="display:flex; gap:0.8rem;">
+                                    <div style="width:10px; height:10px; border-radius:50%; background:var(--status-stock); margin-top:4px;"></div>
+                                    <div>
+                                        Nuevo Patek Philippe Nautilus #5711 ingresado al inventario KronoJules.
+                                        <div style="color:var(--text-muted); font-size:0.75rem;">Hace 1 hora</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn-gold auth-required" style="width:100%; justify-content:center; margin-top:1.5rem;" onclick="openNewWatchModal()">
+                            + Registrar Pieza en Bóveda
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. CATÁLOGO DE RELOJES VIEW -->
+            <section id="view-catalogo" class="view-section">
+                <div class="controls-card">
+                    <div class="search-input-group">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="watchSearch" placeholder="Buscar por Manufactura, Modelo o Referencia..." oninput="filterWatchCatalogue()">
+                    </div>
+
+                    <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+                        <select class="filter-select" id="brandFilter" onchange="filterWatchCatalogue()">
+                            <option value="all">Todas las Manufacturas</option>
+                            <option value="Patek Philippe">Patek Philippe</option>
+                            <option value="Audemars Piguet">Audemars Piguet</option>
+                            <option value="Rolex">Rolex</option>
+                            <option value="Cartier">Cartier Santos</option>
+                            <option value="Vacheron Constantin">Vacheron Constantin</option>
+                        </select>
+
+                        <button class="btn-gold auth-required" onclick="openNewWatchModal()">+ Añadir Pieza</button>
+                    </div>
+                </div>
+
+                <div class="watch-grid" id="catalogoGrid"></div>
+            </section>
+
+            <!-- 3. TALLER CRONO (KANBAN 5 STAGES) VIEW -->
+            <section id="view-servicio" class="view-section">
+                <div class="controls-card">
+                    <div>
+                        <h3 style="font-size:1.3rem; font-weight:700;">Taller Crono & Restauration Service</h3>
+                        <p style="font-size:0.85rem; color:var(--text-muted);">Proceso artesanal de 5 fases supervisado por el equipo técnico KronoJules.</p>
+                    </div>
+                </div>
+
+                <div class="kanban-grid">
+                    <div class="kanban-col" ondragover="allowDrop(event)" ondrop="dropKanban(event, 'Recepcion')">
+                        <div class="kanban-col-header">
+                            <span class="kanban-col-title" style="color:var(--text-muted)">I. Recepción</span>
+                            <span id="count-recepcion">0</span>
+                        </div>
+                        <div id="kanban-recepcion"></div>
+                    </div>
+                    <div class="kanban-col" ondragover="allowDrop(event)" ondrop="dropKanban(event, 'Autenticacion')">
+                        <div class="kanban-col-header">
+                            <span class="kanban-col-title" style="color:var(--status-reserved)">II. Autenticación</span>
+                            <span id="count-autenticacion">0</span>
+                        </div>
+                        <div id="kanban-autenticacion"></div>
+                    </div>
+                    <div class="kanban-col" ondragover="allowDrop(event)" ondrop="dropKanban(event, 'Servicio')">
+                        <div class="kanban-col-header">
+                            <span class="kanban-col-title" style="color:var(--status-service)">III. Servicio & Pulido</span>
+                            <span id="count-servicio">0</span>
+                        </div>
+                        <div id="kanban-servicio"></div>
+                    </div>
+                    <div class="kanban-col" ondragover="allowDrop(event)" ondrop="dropKanban(event, 'Calidad')">
+                        <div class="kanban-col-header">
+                            <span class="kanban-col-title" style="color:var(--gold-primary)">IV. Control Calidad</span>
+                            <span id="count-calidad">0</span>
+                        </div>
+                        <div id="kanban-calidad"></div>
+                    </div>
+                    <div class="kanban-col" ondragover="allowDrop(event)" ondrop="dropKanban(event, 'Entrega')">
+                        <div class="kanban-col-header">
+                            <span class="kanban-col-title" style="color:var(--status-stock)">V. Listo Santuario VIP</span>
+                            <span id="count-entrega">0</span>
+                        </div>
+                        <div id="kanban-entrega"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. GESTIÓN FINANCIERA & DINERO (EXCLUSIVO ADMIN) -->
+            <section id="view-finanzas" class="view-section">
+                <div class="controls-card">
+                    <div>
+                        <h3 style="font-size:1.3rem; font-weight:700;">Control Financiero & Gestión de Bóveda</h3>
+                        <p style="font-size:0.85rem; color:var(--text-muted);">Acceso restringido a Administrador (CEO Jules Ortiz). Edición de caja chica, valor acumulado e ingresos.</p>
+                    </div>
+                    <button class="btn-gold" onclick="openEditMoneyModal()">Modificar Fondos & Bóveda</button>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-head"><span class="kpi-title">Valor Total Bóveda</span></div>
+                        <div class="kpi-value" id="finVaultDisplay">$1,850,000</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-head"><span class="kpi-title">Caja Chica Activa</span></div>
+                        <div class="kpi-value" id="finCashDisplay">$420,000</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-head"><span class="kpi-title">Ingresos Mensuales</span></div>
+                        <div class="kpi-value" id="finIncomeDisplay">$680,000</div>
+                    </div>
+                </div>
+
+                <div style="background:var(--bg-card); border:1px solid var(--gold-border); border-radius:var(--radius-lg); padding:1.6rem; box-shadow:var(--shadow-lux);">
+                    <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:1rem;">Historial de Movimientos Financieros Auditados</h3>
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Concepto / Transacción</th>
+                                    <th>Monto</th>
+                                    <th>Autorizado Por</th>
+                                </tr>
+                            </thead>
+                            <tbody id="financeHistoryBody">
+                                <tr>
+                                    <td>04 Nov 2026</td>
+                                    <td>Venta Patek Philippe Nautilus Jumbo</td>
+                                    <td style="color:#10b981; font-weight:700;">+$115,000 USD</td>
+                                    <td><strong>Jules Ortiz (CEO)</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>02 Nov 2026</td>
+                                    <td>Mantenimiento de Maquinaria Suiza Taller</td>
+                                    <td style="color:#ef4444; font-weight:700;">-$12,500 USD</td>
+                                    <td><strong>Jules Ortiz (CEO)</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. PLANTILLA DE EMPLEADOS (EXCLUSIVO ADMIN) -->
+            <section id="view-empleados" class="view-section">
+                <div class="controls-card">
+                    <div>
+                        <h3 style="font-size:1.3rem; font-weight:700;">Gestión de Plantilla de Empleados</h3>
+                        <p style="font-size:0.85rem; color:var(--text-muted);">Control exclusivo de personal KronoJules. Agregar o desvincular colaboradores.</p>
+                    </div>
+                    <button class="btn-gold" onclick="openAddEmployeeModal()">+ Contratar / Agregar Empleado</button>
+                </div>
+
+                <div style="background:var(--bg-card); border:1px solid var(--gold-border); border-radius:var(--radius-lg); padding:1.6rem; box-shadow:var(--shadow-lux);">
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Empleado</th>
+                                    <th>Puesto / Rol</th>
+                                    <th>Turno Operativo</th>
+                                    <th>Contacto</th>
+                                    <th>Acción (Admin)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeeTableBody">
+                                <!-- Dynamic JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. CERTIFICADOS HELÉNICOS VIEW -->
+            <section id="view-certificados" class="view-section">
+                <div class="cert-card-frame">
+                    <div style="text-align:center; margin-bottom:1.5rem;">
+                        <div style="font-size:0.75rem; letter-spacing:3px; color:var(--gold-primary); font-weight:800;">HAUTE HORLOGERIE • KRONOJULES</div>
+                        <h2 style="font-size:2.2rem; font-weight:800; color:var(--gold-light); margin-top:0.3rem;">Certificado Digital Crono</h2>
+                        <p style="font-size:0.85rem; color:var(--text-muted);">Autenticidad Firmada por Jules Ortiz (CEO)</p>
+                    </div>
+
+                    <div class="meander-divider"></div>
+
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.3rem; font-size:0.88rem; background:rgba(212,175,55,0.04); padding:1.4rem; border-radius:var(--radius-md); border:1px dashed var(--gold-border);">
+                        <div><span style="color:var(--text-muted); font-size:0.75rem; display:block;">Pieza Auditada</span><strong>Patek Philippe Nautilus Jumbo</strong></div>
+                        <div><span style="color:var(--text-muted); font-size:0.75rem; display:block;">Número de Serie</span><strong style="color:var(--gold-primary);">#PP-5711-9982</strong></div>
+                        <div><span style="color:var(--text-muted); font-size:0.75rem; display:block;">Movimiento / Calibre</span><strong>Calibre 26-330 S C (Automático)</strong></div>
+                        <div><span style="color:var(--text-muted); font-size:0.75rem; display:block;">Certificación</span><strong style="color:var(--status-stock);">Sello Helénico Verificado</strong></div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2rem;">
+                        <div>
+                            <span style="font-size:0.78rem; color:var(--text-muted); display:block;">Firma Autorizada del CEO:</span>
+                            <strong style="font-family:'Cinzel'; font-size:1.4rem; color:var(--gold-primary);">Jules Ortiz</strong>
+                        </div>
+                        <div class="gold-wax-seal">
+                            <span>SELLO</span>
+                            <strong style="font-size:0.85rem;">CRONO</strong>
+                            <span>KRONOJULES</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ==========================================================================
+         MODALS SYSTEM & AUTHENTICATION (TEXTO DE CONTRASEÑA COMPLETAMENTE REMOVIDO)
+         ========================================================================== -->
+    <!-- Modal: Autenticación / Cambio de Rol -->
+    <div class="modal-backdrop" id="modalLogin">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Acceso y Autenticación KronoJules</h3>
+                <button class="modal-close-btn" onclick="closeModal('modalLogin')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1.2rem;">
+                    Selecciona tu rol e ingresa tu clave de acceso (si aplica) para validar y cambiar los permisos:
+                </p>
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label class="form-label">Selecciona Rol</label>
+                    <select id="loginRoleSelect" class="form-select" onchange="togglePasswordInput()">
+                        <option value="user">Usuario (Cliente)</option>
+                        <option value="employee">Empleado KronoJules</option>
+                        <option value="admin">Administrador / CEO</option>
+                    </select>
+                </div>
+                <div class="form-group" id="passwordContainer" style="display: none;">
+                    <label class="form-label">Contraseña de Autenticación</label>
+                    <input type="password" id="loginPasswordInput" class="form-input" placeholder="Ingresa tu contraseña..." autocomplete="current-password">
                 </div>
             </div>
-        </div>
-
-        <div id="workshop" class="content-section">
-            <h2>Taller Krono (Kanban)</h2>
-            <p style="color: var(--text-muted); margin-bottom: 10px;">Arrastra las tarjetas para cambiar de estado (Requiere Rol Empleado o Admin).</p>
-            <div class="kanban-board">
-                <div class="kanban-col" id="col-recepcion" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <h4 style="text-align:center; border-bottom:1px solid #d4af37; padding-bottom:5px;">Recepción</h4>
-                    <div class="kanban-item no-drag" id="item1" draggable="false" ondragstart="drag(event)">Cartier Santos (Mantenimiento)</div>
-                </div>
-                <div class="kanban-col" id="col-autenticacion" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <h4 style="text-align:center; border-bottom:1px solid #d4af37; padding-bottom:5px;">Autenticación</h4>
-                </div>
-                <div class="kanban-col" id="col-pulido" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <h4 style="text-align:center; border-bottom:1px solid #d4af37; padding-bottom:5px;">Servicio & Pulido</h4>
-                    <div class="kanban-item no-drag" id="item2" draggable="false" ondragstart="drag(event)">Rolex Submariner (Pulido)</div>
-                </div>
-                <div class="kanban-col" id="col-calidad" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <h4 style="text-align:center; border-bottom:1px solid #d4af37; padding-bottom:5px;">Control Calidad</h4>
-                </div>
-                <div class="kanban-col" id="col-entrega" ondrop="drop(event)" ondragover="allowDrop(event)">
-                    <h4 style="text-align:center; border-bottom:1px solid #d4af37; padding-bottom:5px;">Listo para Entrega</h4>
-                </div>
-            </div>
-        </div>
-
-        <div id="vault" class="content-section admin-only hidden">
-            <h2>Bóveda Krono (Finanzas)</h2>
-            <p style="color: var(--text-muted);">Acceso exclusivo CEO / Administrador.</p>
-            <div class="watch-card" style="max-width: 400px; margin-top:20px;">
-                <h3>Caja Chica (Operativa)</h3>
-                <h1 class="price-tag price" data-usd="15000" style="font-size:2.5rem;">$15,000</h1>
-                <button class="btn-gold" style="width:100%; margin-top:15px;">Añadir Fondos</button>
-            </div>
-        </div>
-
-        <div id="employees" class="content-section admin-only hidden">
-            <h2>Plantilla Personal</h2>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">Acceso exclusivo CEO / Administrador.</p>
-            <button class="btn-gold">+ Registrar Nuevo Empleado</button>
-            <div class="kanban-col" style="margin-top: 20px;">
-                <p><strong>ID 001:</strong> Jules Ortiz (CEO/Admin)</p>
-                <hr style="border-color: rgba(212,175,55,0.2); margin: 10px 0;">
-                <p><strong>ID 002:</strong> Empleado Taller (Operativo)</p>
-            </div>
-        </div>
-    </main>
-
-    <!-- Modal Login de Roles -->
-    <div class="modal-overlay" id="loginModal">
-        <div class="modal-content">
-            <h2 style="margin-bottom: 10px;">Acceso al Sistema</h2>
-            <p style="font-size: 0.9rem; color: var(--text-muted);">Ingresa clave para Empleado o Admin. Deja en blanco para Cliente.</p>
-            <input type="password" id="passInput" placeholder="Contraseña de acceso...">
-            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
-                <button class="btn-outline" onclick="closeLoginModal()">Cancelar</button>
-                <button class="btn-gold" onclick="verifyRole()">Ingresar</button>
+            <div class="modal-footer">
+                <button class="btn-outline-gold" onclick="closeModal('modalLogin')">Cancelar</button>
+                <button class="btn-gold" onclick="processLogin()">Validar e Ingresar</button>
             </div>
         </div>
     </div>
 
+    <!-- Modal: Modificar Fondos y Bóveda (Admin Exclusivo) -->
+    <div class="modal-backdrop" id="modalEditMoney">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Gestión de Bóveda & Fondos</h3>
+                <button class="modal-close-btn" onclick="closeModal('modalEditMoney')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label class="form-label">Nuevo Valor de Bóveda ($ USD)</label>
+                    <input type="number" id="editVaultInput" class="form-input" value="1850000">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nueva Caja Chica ($ USD)</label>
+                    <input type="number" id="editCashInput" class="form-input" value="420000">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline-gold" onclick="closeModal('modalEditMoney')">Cancelar</button>
+                <button class="btn-gold" onclick="saveMoneyChanges()">Actualizar Dinero</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Agregar Empleado (Admin Exclusivo) -->
+    <div class="modal-backdrop" id="modalAddEmployee">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Contratar Nuevo Empleado</h3>
+                <button class="modal-close-btn" onclick="closeModal('modalAddEmployee')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Nombre Completo</label>
+                        <input type="text" id="empNameInput" class="form-input" placeholder="Ej. Mateo Morales" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Puesto / Rol Operativo</label>
+                        <input type="text" id="empRoleInput" class="form-input" placeholder="Ej. Maestro Relojero" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Turno</label>
+                        <select id="empShiftInput" class="form-select">
+                            <option value="Mañana (08:00 - 16:00)">Mañana (08:00 - 16:00)</option>
+                            <option value="Tarde (16:00 - 00:00)">Tarde (16:00 - 00:00)</option>
+                            <option value="Completo (Supervisor)">Completo (Supervisor)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Teléfono Contacto</label>
+                        <input type="text" id="empPhoneInput" class="form-input" placeholder="+56 9 8888 7777" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline-gold" onclick="closeModal('modalAddEmployee')">Cancelar</button>
+                <button class="btn-gold" onclick="saveNewEmployee()">Registrar Empleado</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Detalle Reloj -->
+    <div class="modal-backdrop" id="modalWatchDetail">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalDetailTitle">Ficha Técnica</h3>
+                <button class="modal-close-btn" onclick="closeModal('modalWatchDetail')">&times;</button>
+            </div>
+            <div class="modal-body" id="modalDetailBody"></div>
+            <div class="modal-footer">
+                <button class="btn-outline-gold" onclick="closeModal('modalWatchDetail')">Cerrar</button>
+                <button class="btn-gold" id="btnMarkSold">Marcar como Vendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Registrar Reloj -->
+    <div class="modal-backdrop" id="modalNewWatch">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Registrar Reloj en Bóveda</h3>
+                <button class="modal-close-btn" onclick="closeModal('modalNewWatch')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formWatch">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Manufactura</label>
+                            <select id="newBrand" class="form-select">
+                                <option value="Patek Philippe">Patek Philippe</option>
+                                <option value="Audemars Piguet">Audemars Piguet</option>
+                                <option value="Rolex">Rolex</option>
+                                <option value="Cartier">Cartier Santos</option>
+                                <option value="Vacheron Constantin">Vacheron Constantin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Modelo</label>
+                            <input type="text" id="newModel" class="form-input" placeholder="Ej. Royal Oak 41mm" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Referencia</label>
+                            <input type="text" id="newRef" class="form-input" placeholder="Ej. 15500ST" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Precio ($ USD)</label>
+                            <input type="number" id="newPrice" class="form-input" placeholder="Ej. 65000" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline-gold" onclick="closeModal('modalNewWatch')">Cancelar</button>
+                <button class="btn-gold" onclick="saveNewWatch()">Ingresar a Bóveda</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-wrap" id="toastContainer"></div>
+
+    <!-- ==========================================================================
+         JAVASCRIPT LOGIC, ROUTING & SECURITY
+         ========================================================================== -->
     <script>
-        // ESTADOS GLOBALES
-        let isUSD = true;
-        const TIPO_CAMBIO = 20; 
-        // Roles: 0 = Cliente, 1 = Empleado, 2 = Admin (CEO)
-        let currentRole = 0; 
+        /* ==========================================
+           INTERNAL AUTHENTICATION CONFIGURATION
+           ========================================== */
+        const PASSWORDS = {
+            EMPLOYEE: "JulesAP",
+            ADMIN: "JulesEkirakrono22"
+        };
 
-        // NAVEGACIÓN
-        function switchTab(tabId) {
-            document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-            if(window.innerWidth <= 768) toggleMenu(); // Cerrar menú en móviles al seleccionar
-        }
+        let currentRole = "user"; // "user", "employee", "admin"
+        let currentCurrency = "USD";
+        const exchangeRateMXN = 20.0;
 
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
+        let vaultTotalUSD = 1850000;
+        let cashFlowUSD = 420000;
 
-        // DIVISAS
-        function toggleCurrency() {
-            isUSD = !isUSD;
-            document.getElementById('currencyBtn').innerText = isUSD ? "Divisa: USD" : "Divisa: MXN";
-            updatePrices();
-        }
+        // Dataset using local image files + vector fallback
+        const watchesData = [
+            { id: 1, brand: "Patek Philippe", model: "Nautilus Jumbo", ref: "5711/1A-010", serial: "PP-5711-9982", priceUSD: 115000, status: "En Stock", image: "Nautilus Jumbo.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>` },
+            { id: 2, brand: "Audemars Piguet", model: "Royal Oak Offshore", ref: "26420SO", serial: "AP-ROO-4401", priceUSD: 48500, status: "En Stock", image: "Royal Oak Offshore.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><polygon points="12 2 19 6.5 19 17.5 12 22 5 15 5 6.5 12 2"/><circle cx="12" cy="12" r="4"/></svg>` },
+            { id: 3, brand: "Rolex", model: "Day-Date 40 Olive", ref: "228235", serial: "RLX-DD-18K", priceUSD: 54000, status: "Reservado", image: "Day-Date 40 Olive.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><path d="M2 4l3 12h14l3-12-6 7-4-5-4 5-6-7z"/><circle cx="12" cy="14" r="5"/></svg>` },
+            { id: 4, brand: "Cartier", model: "Santos Skeleton", ref: "WHSA0015", serial: "CT-SAN-77", priceUSD: 31000, status: "En Stock", image: "Santos Skeleton.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/><line x1="12" y1="8" x2="12" y2="12"/></svg>` }
+        ];
 
-        function updatePrices() {
-            const priceElements = document.querySelectorAll('.price');
-            priceElements.forEach(el => {
-                const usdValue = parseFloat(el.getAttribute('data-usd'));
-                if (isUSD) {
-                    el.innerText = '$' + usdValue.toLocaleString('en-US');
-                } else {
-                    el.innerText = '$' + (usdValue * TIPO_CAMBIO).toLocaleString('es-MX') + ' MXN';
-                }
+        let employeesData = [
+            { id: 1, name: "Jules Ortiz", role: "CEO & Founder KronoJules", shift: "Dirección General", phone: "+56 9 1111 2222" },
+            { id: 2, name: "Jean-Luc Moreau", role: "Maître Horloger del Olimpo", shift: "Mañana (08:00 - 16:00)", phone: "+56 9 8765 4321" },
+            { id: 3, name: "Sofia Araya", role: "Supervisora de Bóveda VIP", shift: "Completo (Supervisor)", phone: "+56 9 5555 6666" }
+        ];
+
+        let serviceKanbanData = [
+            { id: 101, watchRef: "PP-5711-9982", model: "Patek Philippe Nautilus", client: "Don Alejandro Sterling", status: "Autenticacion", tech: "Jean-Luc Moreau" },
+            { id: 102, watchRef: "CT-SAN-77", model: "Cartier Santos Skeleton", client: "Dra. Victoria Cavalcanti", status: "Servicio", tech: "Jean-Luc Moreau" }
+        ];
+
+        /* ==========================================
+           DOM INITIALIZATION
+           ========================================== */
+        document.addEventListener("DOMContentLoaded", () => {
+            initSidebarNav();
+            initThemeToggle();
+            renderAllViews();
+        });
+
+        /* ==========================================
+           SIDEBAR & NAVIGATION
+           ========================================== */
+        function initSidebarNav() {
+            const menuItems = document.querySelectorAll(".sidebar-menu .menu-item");
+            menuItems.forEach(item => {
+                item.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const targetViewId = item.getAttribute("data-view");
+
+                    // RBAC check for restricted sections
+                    if ((targetViewId === "view-finanzas" || targetViewId === "view-empleados") && currentRole !== "admin") {
+                        triggerToast("Acceso denegado: Requiere permisos de Administrador (CEO)", "danger");
+                        openLoginModal();
+                        return;
+                    }
+
+                    menuItems.forEach(i => i.classList.remove("active"));
+                    item.classList.add("active");
+                    switchView(targetViewId);
+                    closeSidebar();
+                });
             });
         }
 
-        // CONTROL DE ROLES
+        function toggleSidebar() {
+            document.body.classList.toggle("sidebar-open");
+        }
+
+        function closeSidebar() {
+            document.body.classList.remove("sidebar-open");
+        }
+
+        function switchView(viewId) {
+            document.querySelectorAll(".view-section").forEach(v => v.classList.remove("active-view"));
+            const target = document.getElementById(viewId);
+            if (target) target.classList.add("active-view");
+
+            const titles = {
+                'view-dashboard': 'Dashboard Crono',
+                'view-catalogo': 'Catálogo de Relojes Exclusivos',
+                'view-servicio': 'Taller Crono & Restauration',
+                'view-finanzas': 'Gestión de Dinero & Bóveda (Admin)',
+                'view-empleados': 'Plantilla de Empleados (Admin)',
+                'view-certificados': 'Certificados Helénicos'
+            };
+            document.getElementById("pageTitle").textContent = titles[viewId] || 'KronoJules';
+        }
+
+        /* ==========================================
+           THEME & AUDIO CONTROLLER
+           ========================================== */
+        function initThemeToggle() {
+            document.getElementById("themeBtn").addEventListener("click", () => {
+                const current = document.documentElement.getAttribute("data-theme");
+                const next = current === "dark" ? "light" : "dark";
+                document.documentElement.setAttribute("data-theme", next);
+                triggerToast(`Tema ${next === 'dark' ? 'Azul Rey Crono' : 'Mármol Helénico'} activado`, 'gold');
+            });
+        }
+
+        /* ==========================================
+           CURRENCY & PRICING
+           ========================================== */
+        function setCurrency(curr) {
+            currentCurrency = curr;
+            document.getElementById("btnUSD").classList.toggle("active", curr === 'USD');
+            document.getElementById("btnMXN").classList.toggle("active", curr === 'MXN');
+            renderAllViews();
+            triggerToast(`Precios convertidos a ${curr}`, 'gold');
+        }
+
+        function formatPrice(usdVal) {
+            if (currentCurrency === 'MXN') {
+                return '$' + (usdVal * exchangeRateMXN).toLocaleString('es-MX') + ' MXN';
+            }
+            return '$' + usdVal.toLocaleString('en-US') + ' USD';
+        }
+
+        /* ==========================================
+           ROLE & AUTHENTICATION SYSTEM
+           ========================================== */
+        function togglePasswordInput() {
+            const role = document.getElementById("loginRoleSelect").value;
+            const pwContainer = document.getElementById("passwordContainer");
+            if (role === "user") {
+                pwContainer.style.display = "none";
+            } else {
+                pwContainer.style.display = "flex";
+            }
+        }
+
         function openLoginModal() {
-            document.getElementById('loginModal').classList.add('active');
-            document.getElementById('passInput').value = '';
-            document.getElementById('passInput').focus();
+            document.getElementById("loginRoleSelect").value = currentRole;
+            document.getElementById("loginPasswordInput").value = "";
+            togglePasswordInput();
+            document.getElementById("modalLogin").classList.add("active");
         }
 
-        function closeLoginModal() {
-            document.getElementById('loginModal').classList.remove('active');
+        function processLogin() {
+            const roleSelected = document.getElementById("loginRoleSelect").value;
+            const passwordInput = document.getElementById("loginPasswordInput").value.trim();
+
+            if (roleSelected === "admin") {
+                if (passwordInput === PASSWORDS.ADMIN) {
+                    currentRole = "admin";
+                    updateRoleUI();
+                    closeModal("modalLogin");
+                    triggerToast("Autenticado como Administrador (CEO Jules Ortiz)", "gold");
+                } else {
+                    triggerToast("Contraseña de administrador incorrecta", "danger");
+                }
+            } else if (roleSelected === "employee") {
+                if (passwordInput === PASSWORDS.EMPLOYEE) {
+                    currentRole = "employee";
+                    updateRoleUI();
+                    closeModal("modalLogin");
+                    triggerToast("Autenticado como Empleado KronoJules", "gold");
+                } else {
+                    triggerToast("Contraseña de empleado incorrecta", "danger");
+                }
+            } else {
+                // Default User (No password required)
+                currentRole = "user";
+                updateRoleUI();
+                closeModal("modalLogin");
+                triggerToast("Modo Usuario / Cliente activo", "gold");
+            }
         }
 
-        function verifyRole() {
-            const pass = document.getElementById('passInput').value;
+        function updateRoleUI() {
+            const rolePill = document.getElementById("rolePill");
+            const roleLabel = document.getElementById("roleLabel");
+
+            if (currentRole === "admin") {
+                rolePill.className = "role-pill admin";
+                rolePill.style.background = "";
+                rolePill.style.color = "";
+                roleLabel.textContent = "ROL: ADMINISTRADOR";
+            } else if (currentRole === "employee") {
+                rolePill.className = "role-pill admin"; // Reuse admin styling base
+                rolePill.style.background = "rgba(16, 185, 129, 0.18)"; // Highlight green
+                rolePill.style.color = "#10b981";
+                roleLabel.textContent = "ROL: EMPLEADO";
+            } else {
+                rolePill.className = "role-pill user";
+                rolePill.style.background = "";
+                rolePill.style.color = "";
+                roleLabel.textContent = "ROL: USUARIO";
+                
+                // Redirect if currently in admin restricted view
+                const activeView = document.querySelector(".view-section.active-view");
+                if (activeView && (activeView.id === "view-finanzas" || activeView.id === "view-empleados")) {
+                    document.querySelector('.sidebar-menu .menu-item[data-view="view-dashboard"]').click();
+                }
+            }
+
+            // Hide or show Auth-Required interface elements based on permissions
+            document.querySelectorAll(".auth-required").forEach(el => {
+                el.style.display = currentRole === 'user' ? 'none' : '';
+            });
+
+            // Re-render kanban to hide/show action arrows
+            renderKanbanBoard();
+        }
+
+        function checkAdminPermission() {
+            if (currentRole !== "admin") {
+                triggerToast("Permiso denegado: Acción reservada para el CEO / Administrador", "danger");
+                openLoginModal();
+                return false;
+            }
+            return true;
+        }
+
+        /* ==========================================
+           RENDER CONTROLLERS
+           ========================================== */
+        function renderWatchImage(watch) {
+            if (watch.image) {
+                return `<img src="${watch.image}" alt="${watch.brand} ${watch.model}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div style="display:none;">${watch.imageSvg}</div>`;
+            }
+            return watch.imageSvg;
+        }
+
+        function renderAllViews() {
+            document.getElementById("kpiVaultValue").textContent = formatPrice(vaultTotalUSD);
+            document.getElementById("kpiCashFlow").textContent = formatPrice(cashFlowUSD);
+            document.getElementById("finVaultDisplay").textContent = formatPrice(vaultTotalUSD);
+            document.getElementById("finCashDisplay").textContent = formatPrice(cashFlowUSD);
+            document.getElementById("kpiStaffCount").textContent = `${employeesData.length} Activos`;
+
+            renderSpotlight();
+            renderWatchCatalogue();
+            renderKanbanBoard();
+            renderEmployeeTable();
             
-            // Las contraseñas están hardcodeadas solo en la lógica interna, no en textos visibles
-            if (pass === 'JulesEkirakrono22') {
-                currentRole = 2; // Admin / CEO
-                document.getElementById('roleBtn').innerText = "Rol: CEO / Admin";
-            } else if (pass === 'JulesAP') {
-                currentRole = 1; // Empleado
-                document.getElementById('roleBtn').innerText = "Rol: Empleado";
-            } else {
-                currentRole = 0; // Cliente
-                document.getElementById('roleBtn').innerText = "Rol: Cliente (Vista)";
-            }
-
-            applyRolePermissions();
-            closeLoginModal();
+            // Force roles UI update
+            updateRoleUI();
         }
 
-        function applyRolePermissions() {
-            // Elementos exclusivos de Admin
-            const adminElements = document.querySelectorAll('.admin-only');
-            // Elementos exclusivos de Empleados (y Admin)
-            const employeeElements = document.querySelectorAll('.employee-only');
-            // Items del Kanban
-            const kanbanItems = document.querySelectorAll('.kanban-item');
-
-            if (currentRole === 2) {
-                // ADMIN: Ve todo, mueve todo
-                adminElements.forEach(el => el.classList.remove('hidden'));
-                employeeElements.forEach(el => el.classList.remove('hidden'));
-                kanbanItems.forEach(item => {
-                    item.setAttribute('draggable', 'true');
-                    item.classList.remove('no-drag');
-                });
-            } else if (currentRole === 1) {
-                // EMPLEADO: No ve finanzas/personal, pero edita catálogo y kanban
-                adminElements.forEach(el => el.classList.add('hidden'));
-                employeeElements.forEach(el => el.classList.remove('hidden'));
-                kanbanItems.forEach(item => {
-                    item.setAttribute('draggable', 'true');
-                    item.classList.remove('no-drag');
-                });
-                // Si el empleado está en una pestaña admin, lo mandamos al dashboard
-                if(document.getElementById('vault').classList.contains('active') || document.getElementById('employees').classList.contains('active')){
-                    switchTab('dashboard');
-                }
-            } else {
-                // CLIENTE: Vista de solo lectura. No ve botones de añadir/vender, no arrastra kanban
-                adminElements.forEach(el => el.classList.add('hidden'));
-                employeeElements.forEach(el => el.classList.add('hidden'));
-                kanbanItems.forEach(item => {
-                    item.setAttribute('draggable', 'false');
-                    item.classList.add('no-drag');
-                });
-                if(document.getElementById('vault').classList.contains('active') || document.getElementById('employees').classList.contains('active')){
-                    switchTab('dashboard');
-                }
-            }
+        function renderSpotlight() {
+            const grid = document.getElementById("dashSpotlightGrid");
+            grid.innerHTML = "";
+            watchesData.slice(0, 3).forEach(w => {
+                grid.appendChild(createWatchCardElement(w));
+            });
         }
 
-        // DRAG & DROP (KANBAN)
-        function allowDrop(ev) {
-            if (currentRole > 0) ev.preventDefault(); // Solo empleados/admin pueden soltar
+        function renderWatchCatalogue(data = watchesData) {
+            const grid = document.getElementById("catalogoGrid");
+            grid.innerHTML = "";
+            data.forEach(w => {
+                grid.appendChild(createWatchCardElement(w));
+            });
         }
 
-        function drag(ev) {
-            if (currentRole > 0) {
-                ev.dataTransfer.setData("text", ev.target.id);
-            }
+        function createWatchCardElement(watch) {
+            const card = document.createElement("div");
+            card.className = "watch-card";
+            card.innerHTML = `
+                <div class="watch-card-header">
+                    <div>
+                        <div class="watch-brand">${watch.brand}</div>
+                        <div class="watch-model">${watch.model}</div>
+                    </div>
+                    <span class="status-pill status-${watch.status === 'En Stock' ? 'stock' : 'reserved'}">${watch.status}</span>
+                </div>
+                <div class="watch-hero-icon">${renderWatchImage(watch)}</div>
+                <div class="watch-card-body">
+                    <div class="watch-specs-list">
+                        <div class="spec-row"><span class="spec-label">Referencia:</span><span class="spec-value">${watch.ref}</span></div>
+                        <div class="spec-row"><span class="spec-label">Serie Auditada:</span><span class="spec-value">${watch.serial}</span></div>
+                    </div>
+                    <div class="watch-card-footer">
+                        <span class="watch-price">${formatPrice(watch.priceUSD)}</span>
+                        <button class="btn-gold" onclick="openWatchModal(${watch.id})">Ver Ficha</button>
+                    </div>
+                </div>
+            `;
+            return card;
         }
 
-        function drop(ev) {
-            if (currentRole > 0) {
-                ev.preventDefault();
-                var data = ev.dataTransfer.getData("text");
-                var dropTarget = ev.target;
+        function filterWatchCatalogue() {
+            const query = document.getElementById("watchSearch").value.toLowerCase();
+            const brand = document.getElementById("brandFilter").value;
+            const filtered = watchesData.filter(w => {
+                const matchesQuery = w.brand.toLowerCase().includes(query) || w.model.toLowerCase().includes(query) || w.ref.toLowerCase().includes(query);
+                const matchesBrand = brand === 'all' || w.brand === brand;
+                return matchesQuery && matchesBrand;
+            });
+            renderWatchCatalogue(filtered);
+        }
+
+        /* ==========================================
+           KANBAN BOARD
+           ========================================== */
+        function renderKanbanBoard() {
+            const cols = {
+                'Recepcion': document.getElementById("kanban-recepcion"),
+                'Autenticacion': document.getElementById("kanban-autenticacion"),
+                'Servicio': document.getElementById("kanban-servicio"),
+                'Calidad': document.getElementById("kanban-calidad"),
+                'Entrega': document.getElementById("kanban-entrega")
+            };
+
+            Object.keys(cols).forEach(k => { if (cols[k]) cols[k].innerHTML = ""; });
+            let counts = { Recepcion: 0, Autenticacion: 0, Servicio: 0, Calidad: 0, Entrega: 0 };
+
+            serviceKanbanData.forEach(item => {
+                if (counts[item.status] !== undefined) counts[item.status]++;
                 
-                // Asegurar que soltamos en la columna y no dentro de otro item
-                while (!dropTarget.classList.contains('kanban-col') && dropTarget.parentElement) {
-                    dropTarget = dropTarget.parentElement;
+                let kanbanFooter = '';
+                if (currentRole !== 'user') {
+                    kanbanFooter = `
+                        <div class="kanban-card-footer">
+                            <button class="kanban-nav-btn" onclick="moveKanban(${item.id}, -1)">&larr;</button>
+                            <button class="kanban-nav-btn" onclick="moveKanban(${item.id}, 1)">&rarr;</button>
+                        </div>
+                    `;
                 }
-                
-                if(dropTarget.classList.contains('kanban-col')){
-                    dropTarget.appendChild(document.getElementById(data));
-                }
+
+                const card = document.createElement("div");
+                card.className = "kanban-card";
+                card.innerHTML = `
+                    <div class="kanban-card-ref">${item.watchRef}</div>
+                    <div class="kanban-card-name">${item.model}</div>
+                    <div class="kanban-card-meta">
+                        <span>Cliente: <strong>${item.client}</strong></span>
+                        <span>Técnico: ${item.tech}</span>
+                    </div>
+                    ${kanbanFooter}
+                `;
+                if (cols[item.status]) cols[item.status].appendChild(card);
+            });
+
+            document.getElementById("count-recepcion").textContent = counts.Recepcion;
+            document.getElementById("count-autenticacion").textContent = counts.Autenticacion;
+            document.getElementById("count-servicio").textContent = counts.Servicio;
+            document.getElementById("count-calidad").textContent = counts.Calidad;
+            document.getElementById("count-entrega").textContent = counts.Entrega;
+        }
+
+        function moveKanban(id, dir) {
+            const stages = ['Recepcion', 'Autenticacion', 'Servicio', 'Calidad', 'Entrega'];
+            const item = serviceKanbanData.find(i => i.id === id);
+            if (!item) return;
+
+            let idx = stages.indexOf(item.status) + dir;
+            if (idx >= 0 && idx < stages.length) {
+                item.status = stages[idx];
+                renderKanbanBoard();
+                triggerToast(`Fase del Taller actualizada a ${item.status}`, 'gold');
             }
         }
 
-        // Inicializar formato de precios
-        updatePrices();
+        function allowDrop(ev) { ev.preventDefault(); }
+        function dropKanban(ev, targetStatus) { ev.preventDefault(); }
+
+        /* ==========================================
+           EMPLOYEE MANAGEMENT (ADMIN EXCLUSIVE)
+           ========================================== */
+        function renderEmployeeTable() {
+            const tbody = document.getElementById("employeeTableBody");
+            tbody.innerHTML = "";
+
+            employeesData.forEach(emp => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><strong>${emp.name}</strong></td>
+                    <td>${emp.role}</td>
+                    <td>${emp.shift}</td>
+                    <td>${emp.phone}</td>
+                    <td>
+                        ${emp.name.includes("Jules Ortiz") 
+                            ? `<span style="color:var(--gold-primary); font-weight:800; font-size:0.78rem;">CEO (Inamovible)</span>` 
+                            : `<button class="btn-danger" onclick="deleteEmployee(${emp.id})">Eliminar Empleado</button>`}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openAddEmployeeModal() {
+            if (!checkAdminPermission()) return;
+            document.getElementById("empNameInput").value = "";
+            document.getElementById("empRoleInput").value = "";
+            document.getElementById("modalAddEmployee").classList.add("active");
+        }
+
+        function saveNewEmployee() {
+            if (!checkAdminPermission()) return;
+
+            const name = document.getElementById("empNameInput").value.trim();
+            const role = document.getElementById("empRoleInput").value.trim();
+            const shift = document.getElementById("empShiftInput").value;
+            const phone = document.getElementById("empPhoneInput").value.trim();
+
+            if (!name || !role) {
+                triggerToast("Por favor ingresa nombre y puesto del empleado", "danger");
+                return;
+            }
+
+            employeesData.push({ id: Date.now(), name, role, shift, phone });
+            renderAllViews();
+            closeModal("modalAddEmployee");
+            triggerToast(`Empleado ${name} registrado en la plantilla`, "gold");
+        }
+
+        function deleteEmployee(empId) {
+            if (!checkAdminPermission()) return;
+
+            const emp = employeesData.find(e => e.id === empId);
+            if (emp) {
+                employeesData = employeesData.filter(e => e.id !== empId);
+                renderAllViews();
+                triggerToast(`Empleado ${emp.name} desvinculado`, "gold");
+            }
+        }
+
+        /* ==========================================
+           MONEY & VAULT MANAGEMENT (ADMIN EXCLUSIVE)
+           ========================================== */
+        function openEditMoneyModal() {
+            if (!checkAdminPermission()) return;
+            document.getElementById("editVaultInput").value = vaultTotalUSD;
+            document.getElementById("editCashInput").value = cashFlowUSD;
+            document.getElementById("modalEditMoney").classList.add("active");
+        }
+
+        function saveMoneyChanges() {
+            if (!checkAdminPermission()) return;
+
+            const newVault = parseFloat(document.getElementById("editVaultInput").value);
+            const newCash = parseFloat(document.getElementById("editCashInput").value);
+
+            if (!isNaN(newVault) && !isNaN(newCash)) {
+                vaultTotalUSD = newVault;
+                cashFlowUSD = newCash;
+                renderAllViews();
+                closeModal("modalEditMoney");
+                triggerToast("Valores de Bóveda y Caja Chica actualizados por Jules Ortiz", "gold");
+            }
+        }
+
+        /* ==========================================
+           WATCH MODALS & ACTIONS
+           ========================================== */
+        function openWatchModal(id) {
+            const watch = watchesData.find(w => w.id === id);
+            if (!watch) return;
+
+            // Generate image HTML and force responsive fitting for modal specifically
+            let imgHtml = renderWatchImage(watch);
+            imgHtml = imgHtml.replace('<img', '<img style="max-height:220px; max-width:100%; object-fit:contain; filter:drop-shadow(0 10px 20px rgba(0,0,0,0.5));"');
+            imgHtml = imgHtml.replace('<svg', '<svg style="width:160px; height:160px;"');
+
+            document.getElementById("modalDetailTitle").textContent = `${watch.brand} - ${watch.model}`;
+            document.getElementById("modalDetailBody").innerHTML = `
+                <div style="display:flex; justify-content:center; padding:1.5rem; background:rgba(212,175,55,0.04); border-radius:var(--radius-md); margin-bottom:1.5rem; border:1px solid var(--gold-border); min-height:180px;">
+                    <div style="display:flex; align-items:center; justify-content:center;">${imgHtml}</div>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; font-size:0.88rem;">
+                    <div><span style="color:var(--text-muted); display:block;">Número de Serie Auditado:</span><strong>${watch.serial}</strong></div>
+                    <div><span style="color:var(--text-muted); display:block;">Referencia:</span><strong>${watch.ref}</strong></div>
+                    <div style="grid-column:span 2; border-top:1px solid var(--gold-border); padding-top:1rem; font-size:1.4rem; color:var(--gold-primary); font-family:'Cinzel'; font-weight:700;">
+                        Precio: <strong>${formatPrice(watch.priceUSD)}</strong>
+                    </div>
+                </div>
+            `;
+
+            const btnMarkSold = document.getElementById("btnMarkSold");
+            if (currentRole === "user") {
+                btnMarkSold.style.display = "none";
+            } else {
+                btnMarkSold.style.display = "inline-flex";
+                btnMarkSold.onclick = () => {
+                    watch.status = 'Vendido';
+                    renderAllViews();
+                    closeModal('modalWatchDetail');
+                    triggerToast(`Pieza ${watch.model} asignada como Vendida`, 'gold');
+                };
+            }
+
+            document.getElementById("modalWatchDetail").classList.add("active");
+        }
+
+        function openNewWatchModal() {
+            document.getElementById("formWatch").reset();
+            document.getElementById("modalNewWatch").classList.add("active");
+        }
+
+        function saveNewWatch() {
+            const brand = document.getElementById("newBrand").value;
+            const model = document.getElementById("newModel").value;
+            const ref = document.getElementById("newRef").value;
+            const price = parseFloat(document.getElementById("newPrice").value);
+
+            if (!model || isNaN(price)) {
+                triggerToast("Ingresa los datos requeridos", "danger");
+                return;
+            }
+
+            const newPiece = {
+                id: Date.now(),
+                brand,
+                model,
+                ref,
+                serial: `KJ-${Math.floor(1000 + Math.random() * 9000)}`,
+                priceUSD: price,
+                status: "En Stock",
+                imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>`
+            };
+
+            watchesData.unshift(newPiece);
+            renderAllViews();
+            closeModal("modalNewWatch");
+            triggerToast(`${model} ingresado a la Bóveda KronoJules`, "gold");
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove("active");
+        }
+
+        /* ==========================================
+           TOAST NOTIFICATIONS
+           ========================================== */
+        function triggerToast(msg, type = 'gold') {
+            const container = document.getElementById("toastContainer");
+            const toast = document.createElement("div");
+            toast.className = "toast-msg";
+            if (type === 'danger') toast.style.borderLeftColor = "#ef4444";
+
+            toast.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${type === 'danger' ? '#ef4444' : 'var(--gold-primary)'}" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <span>${msg}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                toast.style.transition = 'all 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
     </script>
 </body>
 </html>
