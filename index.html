@@ -803,6 +803,14 @@
                     <button class="currency-btn" id="btnMXN" onclick="setCurrency('MXN')">MXN ($)</button>
                 </div>
 
+                <!-- Ambient Audio Toggle Button -->
+                <button class="header-icon-btn" id="audioBtn" onclick="toggleAudio()" title="Música & Audio Ambiental del Olimpo">
+                    <svg id="audioIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                </button>
+                <audio id="kronoBgm" loop preload="auto">
+                    <source src="https://assets.mixkit.co/music/preview/mixkit-delicate-piano-and-strings-567.mp3" type="audio/mpeg">
+                </audio>
+
                 <!-- Theme Switcher -->
                 <button class="header-icon-btn" id="themeBtn" title="Cambiar Tema (Azul Rey / Mármol Helénico)">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
@@ -1128,8 +1136,8 @@
                 <div class="form-group" style="margin-bottom:1rem;">
                     <label class="form-label">Selecciona Rol</label>
                     <select id="loginRoleSelect" class="form-select">
-                        <option value="user">Usuario / Empleado (Pass: JulesAP)</option>
-                        <option value="admin">Administrador / CEO (Pass: JulesEkirakrono22)</option>
+                        <option value="user">Usuario / Empleado </option>
+                        <option value="admin">Administrador / CEO </option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1285,11 +1293,12 @@
         let vaultTotalUSD = 1850000;
         let cashFlowUSD = 420000;
 
+        // Custom Watch Dataset incorporating user PNG image paths
         const watchesData = [
-            { id: 1, brand: "Patek Philippe", model: "Nautilus Jumbo", ref: "5711/1A-010", serial: "PP-5711-9982", priceUSD: 115000, status: "En Stock", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>` },
-            { id: 2, brand: "Audemars Piguet", model: "Royal Oak Offshore", ref: "26420SO", serial: "AP-ROO-4401", priceUSD: 48500, status: "En Stock", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><polygon points="12 2 19 6.5 19 17.5 12 22 5 17.5 5 6.5 12 2"/><circle cx="12" cy="12" r="4"/></svg>` },
-            { id: 3, brand: "Rolex", model: "Day-Date 40 Olive", ref: "228235", serial: "RLX-DD-18K", priceUSD: 54000, status: "Reservado", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><path d="M2 4l3 12h14l3-12-6 7-4-5-4 5-6-7z"/><circle cx="12" cy="14" r="5"/></svg>` },
-            { id: 4, brand: "Cartier", model: "Santos Skeleton", ref: "WHSA0015", serial: "CT-SAN-77", priceUSD: 31000, status: "En Stock", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/><line x1="12" y1="8" x2="12" y2="12"/></svg>` }
+            { id: 1, brand: "Patek Philippe", model: "Nautilus Jumbo", ref: "5711/1A-010", serial: "PP-5711-9982", priceUSD: 115000, status: "En Stock", image: "Nautilus Jumbo.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>` },
+            { id: 2, brand: "Audemars Piguet", model: "Royal Oak Offshore", ref: "26420SO", serial: "AP-ROO-4401", priceUSD: 48500, status: "En Stock", image: "Royal Oak Offshore.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><polygon points="12 2 19 6.5 19 17.5 12 22 5 17.5 5 6.5 12 2"/><circle cx="12" cy="12" r="4"/></svg>` },
+            { id: 3, brand: "Rolex", model: "Day-Date 40 Olive", ref: "228235", serial: "RLX-DD-18K", priceUSD: 54000, status: "Reservado", image: "Day-Date 40 Olive.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><path d="M2 4l3 12h14l3-12-6 7-4-5-4 5-6-7z"/><circle cx="12" cy="14" r="5"/></svg>` },
+            { id: 4, brand: "Cartier", model: "Santos Skeleton", ref: "WHSA0015", serial: "CT-SAN-77", priceUSD: 31000, status: "En Stock", image: "Santos Skeleton.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/><line x1="12" y1="8" x2="12" y2="12"/></svg>` }
         ];
 
         let employeesData = [
@@ -1304,147 +1313,33 @@
         ];
 
         /* ==========================================
-           INITIALIZATION
+           AUDIO CONTROLLER
            ========================================== */
-        document.addEventListener("DOMContentLoaded", () => {
-            initSidebarNav();
-            initThemeToggle();
-            updateRoleUI();
-            renderAllViews();
-        });
-
-        /* ==========================================
-           ROLE & AUTHENTICATION SYSTEM (RBAC)
-           ========================================== */
-        function openLoginModal() {
-            document.getElementById("loginPasswordInput").value = "";
-            document.getElementById("modalLogin").classList.add("active");
-        }
-
-        function processLogin() {
-            const selectedRole = document.getElementById("loginRoleSelect").value;
-            const pass = document.getElementById("loginPasswordInput").value.trim();
-
-            if (selectedRole === "admin") {
-                if (pass === PASSWORDS.ADMIN) {
-                    currentRole = "admin";
-                    updateRoleUI();
-                    closeModal("modalLogin");
-                    triggerToast("Acceso Concedido: Administrador (Jules Ortiz)", "gold");
-                } else {
-                    triggerToast("Contraseña de Admin Incorrecta", "danger");
-                }
-            } else {
-                if (pass === PASSWORDS.USER) {
-                    currentRole = "user";
-                    updateRoleUI();
-                    closeModal("modalLogin");
-                    triggerToast("Acceso Concedido: Usuario / Empleado", "gold");
-                } else {
-                    triggerToast("Contraseña de Usuario Incorrecta", "danger");
-                }
-            }
-        }
-
-        function updateRoleUI() {
-            const pill = document.getElementById("rolePill");
-            const label = document.getElementById("roleLabel");
-
-            if (currentRole === "admin") {
-                pill.className = "role-pill admin";
-                label.textContent = "ROL: ADMIN (CEO)";
-            } else {
-                pill.className = "role-pill user";
-                label.textContent = "ROL: USUARIO";
-            }
-        }
-
-        function checkAdminPermission() {
-            if (currentRole !== "admin") {
-                openLoginModal();
-                triggerToast("Acceso restringido: Se requiere contraseña de Admin (JulesEkirakrono22)", "danger");
-                return false;
-            }
-            return true;
-        }
-
-        /* ==========================================
-           SIDEBAR & VIEW SWITCHING
-           ========================================== */
-        function initSidebarNav() {
-            const menuItems = document.querySelectorAll(".sidebar-menu .menu-item");
-            menuItems.forEach(item => {
-                item.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    const targetViewId = item.getAttribute("data-view");
-
-                    // Restrict finance and employee views for standard users
-                    if ((targetViewId === "view-finanzas" || targetViewId === "view-empleados") && currentRole !== "admin") {
-                        checkAdminPermission();
-                        return;
-                    }
-
-                    menuItems.forEach(i => i.classList.remove("active"));
-                    item.classList.add("active");
-                    switchView(targetViewId);
-                    document.body.classList.remove("sidebar-open");
+        function toggleAudio() {
+            const audio = document.getElementById('kronoBgm');
+            if (audio.paused) {
+                audio.volume = 0.25;
+                audio.play().then(() => {
+                    triggerToast('Música ambiental activada (Atmósfera Olimpo)', 'gold');
+                }).catch(() => {
+                    triggerToast('Haz clic de nuevo para habilitar la reproducción de audio', 'gold');
                 });
-            });
-
-            document.getElementById("mobileMenuBtn").addEventListener("click", () => {
-                document.body.classList.toggle("sidebar-open");
-            });
-        }
-
-        function switchView(viewId) {
-            document.querySelectorAll(".view-section").forEach(v => v.classList.remove("active-view"));
-            const target = document.getElementById(viewId);
-            if (target) target.classList.add("active-view");
-
-            const titles = {
-                'view-dashboard': 'Dashboard del Olimpo',
-                'view-catalogo': 'Catálogo de Relojes Exclusivos',
-                'view-servicio': 'Taller del Olimpo & Restauration',
-                'view-finanzas': 'Control Financiero & Bóveda (Admin)',
-                'view-empleados': 'Plantilla de Empleados (Admin)',
-                'view-certificados': 'Certificados Helénicos'
-            };
-            document.getElementById("pageTitle").textContent = titles[viewId] || 'KronoJules';
-        }
-
-        /* ==========================================
-           CURRENCY & PRICE FORMATTING
-           ========================================== */
-        function setCurrency(curr) {
-            currentCurrency = curr;
-            document.getElementById("btnUSD").classList.toggle("active", curr === 'USD');
-            document.getElementById("btnMXN").classList.toggle("active", curr === 'MXN');
-            renderAllViews();
-            triggerToast(`Moneda convertida a ${curr}`, 'gold');
-        }
-
-        function formatPrice(usdVal) {
-            if (currentCurrency === 'MXN') {
-                return '$' + (usdVal * exchangeRateMXN).toLocaleString('es-MX') + ' MXN';
+            } else {
+                audio.pause();
+                triggerToast('Audio desactivado', 'gold');
             }
-            return '$' + usdVal.toLocaleString('en-US') + ' USD';
-        }
-
-        /* ==========================================
-           THEME TOGGLE
-           ========================================== */
-        function initThemeToggle() {
-            document.getElementById("themeBtn").addEventListener("click", () => {
-                const current = document.documentElement.getAttribute("data-theme");
-                const next = current === "dark" ? "light" : "dark";
-                document.documentElement.setAttribute("data-theme", next);
-                triggerToast(`Tema ${next === 'dark' ? 'Azul Rey Olimpo' : 'Mármol Helénico'} activado`, 'gold');
-            });
         }
 
         /* ==========================================
            RENDER CONTROLLERS
            ========================================== */
+        function renderWatchImage(watch) {
+            if (watch.image) {
+                return `<img src="${watch.image}" alt="${watch.brand} ${watch.model}" style="max-height: 110px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5));" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div style="display:none; width:80px; height:80px;">${watch.imageSvg}</div>`;
+            }
+            return `<div style="width:80px; height:80px;">${watch.imageSvg}</div>`;
+        }
+
         function renderAllViews() {
             document.getElementById("kpiVaultValue").textContent = formatPrice(vaultTotalUSD);
             document.getElementById("kpiCashFlow").textContent = formatPrice(cashFlowUSD);
@@ -1485,7 +1380,7 @@
                     </div>
                     <span class="status-pill status-${watch.status === 'En Stock' ? 'stock' : 'reserved'}">${watch.status}</span>
                 </div>
-                <div class="watch-hero-icon">${watch.imageSvg}</div>
+                <div class="watch-hero-icon">${renderWatchImage(watch)}</div>
                 <div class="watch-card-body">
                     <div class="watch-specs-list">
                         <div class="spec-row"><span class="spec-label">Referencia:</span><span class="spec-value">${watch.ref}</span></div>
@@ -1664,7 +1559,7 @@
             document.getElementById("modalDetailTitle").textContent = `${watch.brand} - ${watch.model}`;
             document.getElementById("modalDetailBody").innerHTML = `
                 <div style="display:flex; justify-content:center; padding:1.5rem; background:rgba(212,175,55,0.04); border-radius:var(--radius-md); margin-bottom:1.5rem; border:1px solid var(--gold-border);">
-                    <div style="width:100px; height:100px;">${watch.imageSvg}</div>
+                    <div style="height:110px; display:flex; align-items:center; justify-content:center;">${renderWatchImage(watch)}</div>
                 </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; font-size:0.88rem;">
                     <div><span style="color:var(--text-muted); display:block;">Número de Serie Auditado:</span><strong>${watch.serial}</strong></div>
