@@ -17,10 +17,10 @@
             /* Theme: Azul Rey Olimpo (Dark Royal Blue & Gold) */
             --bg-body: #061024;
             --bg-body-gradient: radial-gradient(circle at 50% 0%, #0d234d 0%, #061024 85%);
-            --bg-card: rgba(11, 29, 58, 0.78);
+            --bg-card: rgba(11, 29, 58, 0.85);
             --bg-card-solid: #0b1d3a;
             --bg-sidebar: #040a18;
-            --bg-header: rgba(6, 16, 36, 0.90);
+            --bg-header: rgba(6, 16, 36, 0.92);
             --bg-input: #0f274d;
             --bg-modal-overlay: rgba(3, 8, 20, 0.88);
             
@@ -68,12 +68,12 @@
             /* Theme: Mármol Helénico (Hellenic White Marble & Gold) */
             --bg-body: #f4f7fb;
             --bg-body-gradient: radial-gradient(circle at 50% 0%, #ffffff 0%, #e8eeef 100%);
-            --bg-card: rgba(255, 255, 255, 0.94);
+            --bg-card: rgba(255, 255, 255, 0.95);
             --bg-card-solid: #ffffff;
             --bg-sidebar: #0a192f;
-            --bg-header: rgba(244, 247, 251, 0.94);
+            --bg-header: rgba(244, 247, 251, 0.95);
             --bg-input: #ffffff;
-            --bg-modal-overlay: rgba(10, 25, 47, 0.70);
+            --bg-modal-overlay: rgba(10, 25, 47, 0.75);
             
             --gold-primary: #b89128;
             --gold-light: #7a5c0b;
@@ -98,6 +98,7 @@
             box-sizing: border-box;
             font-family: 'Inter', system-ui, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            user-select: auto;
         }
 
         body {
@@ -115,16 +116,14 @@
             letter-spacing: 1px;
         }
 
-        /* Meander Border Utility */
+        /* Greek Key Meander Border Utilities */
         .meander-top-border {
             position: relative;
         }
         .meander-top-border::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+            top: 0; left: 0; right: 0;
             height: 4px;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='4' viewBox='0 0 16 4'%3E%3Cpath d='M0 4V0h16v4h-2V2H2v2H0zm4-2h8v2H4V2z' fill='%23d4af37' fill-opacity='0.75'/%3E%3C/svg%3E");
             background-repeat: repeat-x;
@@ -144,7 +143,7 @@
         ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 4px; }
 
         /* ==========================================================================
-           SIDEBAR NAVIGATION
+           SIDEBAR NAVIGATION & OVERLAY
            ========================================================================== */
         aside.sidebar {
             width: var(--sidebar-width);
@@ -152,13 +151,27 @@
             display: flex;
             flex-direction: column;
             position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
+            top: 0; bottom: 0; left: 0;
             z-index: 100;
             border-right: 1px solid var(--gold-border);
             transition: transform var(--transition-speed) ease;
             box-shadow: 5px 0 25px rgba(0,0,0,0.6);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(4px);
+            z-index: 95;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        body.sidebar-open .sidebar-overlay {
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .sidebar-header {
@@ -252,9 +265,7 @@
         .menu-item.active a::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 15%;
-            bottom: 15%;
+            left: 0; top: 15%; bottom: 15%;
             width: 4px;
             background: var(--gold-gradient);
             border-radius: 2px;
@@ -296,6 +307,8 @@
             display: flex;
             flex-direction: column;
             min-width: 0;
+            position: relative;
+            z-index: 10;
         }
 
         header.top-header {
@@ -324,6 +337,7 @@
             border: none;
             color: var(--gold-primary);
             cursor: pointer;
+            padding: 0.4rem;
         }
 
         .page-title-heading {
@@ -377,6 +391,7 @@
             letter-spacing: 0.5px;
             border: 1px solid var(--gold-border);
             cursor: pointer;
+            transition: all 0.25s ease;
         }
 
         .role-pill.admin { background: rgba(212, 175, 55, 0.18); color: var(--gold-light); }
@@ -386,8 +401,7 @@
             background: var(--bg-input);
             border: 1px solid var(--gold-border);
             color: var(--gold-primary);
-            width: 42px;
-            height: 42px;
+            width: 42px; height: 42px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -415,8 +429,7 @@
         }
 
         .user-avatar-crown {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border-radius: 50%;
             background: var(--gold-gradient);
             color: #061024;
@@ -487,7 +500,7 @@
         .kpi-value { font-size: 2rem; font-weight: 800; color: var(--text-main); line-height: 1.1; margin-bottom: 0.4rem; font-family: 'Cinzel', serif; }
         .kpi-subtext { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; }
 
-        /* Buttons & Forms */
+        /* Buttons & Controls */
         .btn-gold {
             background: var(--gold-gradient);
             color: #061024;
@@ -585,7 +598,8 @@
         .status-sold { background: var(--status-sold-bg); color: var(--status-sold); border: 1px solid rgba(239, 68, 68, 0.4); }
         .status-service { background: var(--status-service-bg); color: var(--status-service); border: 1px solid rgba(168, 85, 247, 0.4); }
 
-        .watch-hero-icon { height: 120px; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+        .watch-hero-icon { height: 130px; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+        .watch-hero-icon img { max-height: 110px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5)); }
         .watch-hero-icon svg { width: 80px; height: 80px; filter: drop-shadow(0 6px 15px rgba(212, 175, 55, 0.3)); }
 
         .watch-card-body { padding: 0 1.5rem 1.5rem 1.5rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
@@ -650,17 +664,25 @@
         }
 
         /* ==========================================================================
-           MODALS & OVERLAYS
+           MODALS & OVERLAYS (SAFE POINTER-EVENTS & Z-INDEX)
            ========================================================================== */
         .modal-backdrop {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: var(--bg-modal-overlay);
             backdrop-filter: blur(10px);
-            display: none; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center; justify-content: center;
             z-index: 1000; padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
         }
-        .modal-backdrop.active { display: flex; animation: modalFade 0.25s ease; }
-        @keyframes modalFade { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
 
         .modal-box {
             background: var(--bg-card-solid);
@@ -669,6 +691,11 @@
             width: 100%; max-width: 580px;
             box-shadow: 0 25px 60px rgba(0,0,0,0.95), var(--gold-glow);
             overflow: hidden; display: flex; flex-direction: column; max-height: 90vh;
+            transform: scale(0.96);
+            transition: transform 0.25s ease;
+        }
+        .modal-backdrop.active .modal-box {
+            transform: scale(1);
         }
 
         .modal-header {
@@ -697,13 +724,14 @@
         .modal-footer { padding: 1.2rem 1.8rem; border-top: 1px solid var(--gold-border); display: flex; justify-content: flex-end; gap: 0.8rem; background: rgba(0,0,0,0.25); }
 
         /* Toast Container */
-        .toast-wrap { position: fixed; bottom: 25px; right: 25px; z-index: 2000; display: flex; flex-direction: column; gap: 12px; }
+        .toast-wrap { position: fixed; bottom: 25px; right: 25px; z-index: 2000; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
         .toast-msg {
             background: var(--bg-sidebar); color: #fff;
             border-left: 4px solid var(--gold-primary); border: 1px solid var(--gold-border);
             padding: 1rem 1.4rem; border-radius: var(--radius-md);
             box-shadow: 0 12px 35px rgba(0,0,0,0.8), var(--gold-glow);
             display: flex; align-items: center; gap: 0.85rem; font-size: 0.88rem;
+            pointer-events: auto;
             animation: toastIn 0.3s forwards;
         }
         @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
@@ -716,10 +744,14 @@
             .mobile-menu-btn { display: block; }
             .form-grid { grid-template-columns: 1fr; }
             .form-group.full-width { grid-column: span 1; }
+            .dash-details-grid { grid-template-columns: 1fr !important; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Sidebar Backdrop Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
     <!-- ==========================================================================
          SIDEBAR NAVIGATION
@@ -790,7 +822,7 @@
     <div class="main-wrapper">
         <header class="top-header">
             <div class="header-left">
-                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
                 </button>
                 <h1 class="page-title-heading" id="pageTitle">Dashboard del Olimpo</h1>
@@ -881,12 +913,12 @@
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                             </div>
                         </div>
-                        <div class="kpi-value" id="kpiStaffCount">5 Activos</div>
+                        <div class="kpi-value" id="kpiStaffCount">3 Activos</div>
                         <div class="kpi-subtext">Supervisados por Jules Ortiz</div>
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.6rem;">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.6rem;" class="dash-details-grid">
                     <div style="background:var(--bg-card); border:1px solid var(--gold-border); border-radius:var(--radius-lg); padding:1.6rem; box-shadow:var(--shadow-lux);">
                         <div style="display:flex; justify-content:space-between; align-items:center;">
                             <h3 style="font-size:1.3rem; font-weight:700;">Selección Destacada KronoJules</h3>
@@ -1120,7 +1152,7 @@
     </div>
 
     <!-- ==========================================================================
-         MODALS SYSTEM & AUTHENTICATION
+         MODALS SYSTEM & AUTHENTICATION (TEXTO DE CONTRASEÑA COMPLETAMENTE REMOVIDO)
          ========================================================================== -->
     <!-- Modal: Autenticación / Cambio de Rol -->
     <div class="modal-backdrop" id="modalLogin">
@@ -1131,23 +1163,23 @@
             </div>
             <div class="modal-body">
                 <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1.2rem;">
-                    Introduce la contraseña correspondiente a tu rol para cambiar los permisos del sistema:
+                    Ingresa tu clave de acceso autorizada para validar y cambiar los permisos en la plataforma:
                 </p>
                 <div class="form-group" style="margin-bottom:1rem;">
                     <label class="form-label">Selecciona Rol</label>
                     <select id="loginRoleSelect" class="form-select">
-                        <option value="user">Usuario / Empleado </option>
-                        <option value="admin">Administrador / CEO </option>
+                        <option value="user">Usuario / Empleado</option>
+                        <option value="admin">Administrador / CEO</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Contraseña de Autenticación</label>
-                    <input type="password" id="loginPasswordInput" class="form-input" placeholder="Ingresa tu contraseña..." required>
+                    <input type="password" id="loginPasswordInput" class="form-input" placeholder="Ingresa tu contraseña..." required autocomplete="current-password">
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn-outline-gold" onclick="closeModal('modalLogin')">Cancelar</button>
-                <button class="btn-gold" onclick="processLogin()">Validar y Entrar</button>
+                <button class="btn-gold" onclick="processLogin()">Validar e Ingresar</button>
             </div>
         </div>
     </div>
@@ -1275,11 +1307,11 @@
     <div class="toast-wrap" id="toastContainer"></div>
 
     <!-- ==========================================================================
-         JAVASCRIPT LOGIC & RBAC CONTROL
+         JAVASCRIPT LOGIC, ROUTING & SECURITY
          ========================================================================== -->
     <script>
         /* ==========================================
-           STATE & PASSWORDS CONFIGURATION
+           INTERNAL AUTHENTICATION CONFIGURATION
            ========================================== */
         const PASSWORDS = {
             USER: "JulesAP",
@@ -1293,10 +1325,10 @@
         let vaultTotalUSD = 1850000;
         let cashFlowUSD = 420000;
 
-        // Custom Watch Dataset incorporating user PNG image paths
+        // Dataset using local image files + vector fallback
         const watchesData = [
             { id: 1, brand: "Patek Philippe", model: "Nautilus Jumbo", ref: "5711/1A-010", serial: "PP-5711-9982", priceUSD: 115000, status: "En Stock", image: "Nautilus Jumbo.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>` },
-            { id: 2, brand: "Audemars Piguet", model: "Royal Oak Offshore", ref: "26420SO", serial: "AP-ROO-4401", priceUSD: 48500, status: "En Stock", image: "Royal Oak Offshore.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><polygon points="12 2 19 6.5 19 17.5 12 22 5 17.5 5 6.5 12 2"/><circle cx="12" cy="12" r="4"/></svg>` },
+            { id: 2, brand: "Audemars Piguet", model: "Royal Oak Offshore", ref: "26420SO", serial: "AP-ROO-4401", priceUSD: 48500, status: "En Stock", image: "Royal Oak Offshore.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><polygon points="12 2 19 6.5 19 17.5 12 22 5 15 5 6.5 12 2"/><circle cx="12" cy="12" r="4"/></svg>` },
             { id: 3, brand: "Rolex", model: "Day-Date 40 Olive", ref: "228235", serial: "RLX-DD-18K", priceUSD: 54000, status: "Reservado", image: "Day-Date 40 Olive.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><path d="M2 4l3 12h14l3-12-6 7-4-5-4 5-6-7z"/><circle cx="12" cy="14" r="5"/></svg>` },
             { id: 4, brand: "Cartier", model: "Santos Skeleton", ref: "WHSA0015", serial: "CT-SAN-77", priceUSD: 31000, status: "En Stock", image: "Santos Skeleton.png", imageSvg: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--gold-primary)" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="3"/><line x1="12" y1="8" x2="12" y2="12"/></svg>` }
         ];
@@ -1313,8 +1345,75 @@
         ];
 
         /* ==========================================
-           AUDIO CONTROLLER
+           DOM INITIALIZATION
            ========================================== */
+        document.addEventListener("DOMContentLoaded", () => {
+            initSidebarNav();
+            initThemeToggle();
+            renderAllViews();
+        });
+
+        /* ==========================================
+           SIDEBAR & NAVIGATION
+           ========================================== */
+        function initSidebarNav() {
+            const menuItems = document.querySelectorAll(".sidebar-menu .menu-item");
+            menuItems.forEach(item => {
+                item.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const targetViewId = item.getAttribute("data-view");
+
+                    // RBAC check for restricted sections
+                    if ((targetViewId === "view-finanzas" || targetViewId === "view-empleados") && currentRole !== "admin") {
+                        triggerToast("Acceso denegado: Requiere permisos de Administrador (CEO)", "danger");
+                        openLoginModal();
+                        return;
+                    }
+
+                    menuItems.forEach(i => i.classList.remove("active"));
+                    item.classList.add("active");
+                    switchView(targetViewId);
+                    closeSidebar();
+                });
+            });
+        }
+
+        function toggleSidebar() {
+            document.body.classList.toggle("sidebar-open");
+        }
+
+        function closeSidebar() {
+            document.body.classList.remove("sidebar-open");
+        }
+
+        function switchView(viewId) {
+            document.querySelectorAll(".view-section").forEach(v => v.classList.remove("active-view"));
+            const target = document.getElementById(viewId);
+            if (target) target.classList.add("active-view");
+
+            const titles = {
+                'view-dashboard': 'Dashboard del Olimpo',
+                'view-catalogo': 'Catálogo de Relojes Exclusivos',
+                'view-servicio': 'Taller del Olimpo & Restauration',
+                'view-finanzas': 'Gestión de Dinero & Bóveda (Admin)',
+                'view-empleados': 'Plantilla de Empleados (Admin)',
+                'view-certificados': 'Certificados Helénicos'
+            };
+            document.getElementById("pageTitle").textContent = titles[viewId] || 'KronoJules';
+        }
+
+        /* ==========================================
+           THEME & AUDIO CONTROLLER
+           ========================================== */
+        function initThemeToggle() {
+            document.getElementById("themeBtn").addEventListener("click", () => {
+                const current = document.documentElement.getAttribute("data-theme");
+                const next = current === "dark" ? "light" : "dark";
+                document.documentElement.setAttribute("data-theme", next);
+                triggerToast(`Tema ${next === 'dark' ? 'Azul Rey Olimpo' : 'Mármol Helénico'} activado`, 'gold');
+            });
+        }
+
         function toggleAudio() {
             const audio = document.getElementById('kronoBgm');
             if (audio.paused) {
@@ -1322,7 +1421,7 @@
                 audio.play().then(() => {
                     triggerToast('Música ambiental activada (Atmósfera Olimpo)', 'gold');
                 }).catch(() => {
-                    triggerToast('Haz clic de nuevo para habilitar la reproducción de audio', 'gold');
+                    triggerToast('Haz clic de nuevo para autorizar el audio', 'gold');
                 });
             } else {
                 audio.pause();
@@ -1331,13 +1430,86 @@
         }
 
         /* ==========================================
+           CURRENCY & PRICING
+           ========================================== */
+        function setCurrency(curr) {
+            currentCurrency = curr;
+            document.getElementById("btnUSD").classList.toggle("active", curr === 'USD');
+            document.getElementById("btnMXN").classList.toggle("active", curr === 'MXN');
+            renderAllViews();
+            triggerToast(`Precios convertidos a ${curr}`, 'gold');
+        }
+
+        function formatPrice(usdVal) {
+            if (currentCurrency === 'MXN') {
+                return '$' + (usdVal * exchangeRateMXN).toLocaleString('es-MX') + ' MXN';
+            }
+            return '$' + usdVal.toLocaleString('en-US') + ' USD';
+        }
+
+        /* ==========================================
+           ROLE & AUTHENTICATION SYSTEM
+           ========================================== */
+        function openLoginModal() {
+            document.getElementById("loginPasswordInput").value = "";
+            document.getElementById("modalLogin").classList.add("active");
+        }
+
+        function processLogin() {
+            const roleSelected = document.getElementById("loginRoleSelect").value;
+            const passwordInput = document.getElementById("loginPasswordInput").value.trim();
+
+            if (roleSelected === "admin" && passwordInput === PASSWORDS.ADMIN) {
+                currentRole = "admin";
+                updateRoleUI();
+                closeModal("modalLogin");
+                triggerToast("Autenticado como Administrador (CEO Jules Ortiz)", "gold");
+            } else if (roleSelected === "user" && passwordInput === PASSWORDS.USER) {
+                currentRole = "user";
+                updateRoleUI();
+                closeModal("modalLogin");
+                triggerToast("Modo Usuario / Empleado activo", "gold");
+            } else {
+                triggerToast("Contraseña incorrecta para el rol seleccionado", "danger");
+            }
+        }
+
+        function updateRoleUI() {
+            const rolePill = document.getElementById("rolePill");
+            const roleLabel = document.getElementById("roleLabel");
+
+            if (currentRole === "admin") {
+                rolePill.className = "role-pill admin";
+                roleLabel.textContent = "ROL: ADMINISTRADOR";
+            } else {
+                rolePill.className = "role-pill user";
+                roleLabel.textContent = "ROL: USUARIO";
+                
+                // Redirect if currently in admin restricted view
+                const activeView = document.querySelector(".view-section.active-view");
+                if (activeView && (activeView.id === "view-finanzas" || activeView.id === "view-empleados")) {
+                    document.querySelector('.sidebar-menu .menu-item[data-view="view-dashboard"]').click();
+                }
+            }
+        }
+
+        function checkAdminPermission() {
+            if (currentRole !== "admin") {
+                triggerToast("Permiso denegado: Acción reservada para el CEO / Administrador", "danger");
+                openLoginModal();
+                return false;
+            }
+            return true;
+        }
+
+        /* ==========================================
            RENDER CONTROLLERS
            ========================================== */
         function renderWatchImage(watch) {
             if (watch.image) {
-                return `<img src="${watch.image}" alt="${watch.brand} ${watch.model}" style="max-height: 110px; max-width: 100%; object-fit: contain; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.5));" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div style="display:none; width:80px; height:80px;">${watch.imageSvg}</div>`;
+                return `<img src="${watch.image}" alt="${watch.brand} ${watch.model}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"><div style="display:none;">${watch.imageSvg}</div>`;
             }
-            return `<div style="width:80px; height:80px;">${watch.imageSvg}</div>`;
+            return watch.imageSvg;
         }
 
         function renderAllViews() {
@@ -1384,7 +1556,7 @@
                 <div class="watch-card-body">
                     <div class="watch-specs-list">
                         <div class="spec-row"><span class="spec-label">Referencia:</span><span class="spec-value">${watch.ref}</span></div>
-                        <div class="spec-row"><span class="spec-label">Serie:</span><span class="spec-value">${watch.serial}</span></div>
+                        <div class="spec-row"><span class="spec-label">Serie Auditada:</span><span class="spec-value">${watch.serial}</span></div>
                     </div>
                     <div class="watch-card-footer">
                         <span class="watch-price">${formatPrice(watch.priceUSD)}</span>
@@ -1456,7 +1628,7 @@
             if (idx >= 0 && idx < stages.length) {
                 item.status = stages[idx];
                 renderKanbanBoard();
-                triggerToast(`Fase del Taller actualizada`, 'gold');
+                triggerToast(`Fase del Taller actualizada a ${item.status}`, 'gold');
             }
         }
 
@@ -1464,7 +1636,7 @@
         function dropKanban(ev, targetStatus) { ev.preventDefault(); }
 
         /* ==========================================
-           EMPLOYEE MANAGEMENT (ADMIN ONLY)
+           EMPLOYEE MANAGEMENT (ADMIN EXCLUSIVE)
            ========================================== */
         function renderEmployeeTable() {
             const tbody = document.getElementById("employeeTableBody");
@@ -1510,7 +1682,7 @@
             employeesData.push({ id: Date.now(), name, role, shift, phone });
             renderAllViews();
             closeModal("modalAddEmployee");
-            triggerToast(`Empleado ${name} contratado exitosamente`, "gold");
+            triggerToast(`Empleado ${name} registrado en la plantilla`, "gold");
         }
 
         function deleteEmployee(empId) {
@@ -1520,12 +1692,12 @@
             if (emp) {
                 employeesData = employeesData.filter(e => e.id !== empId);
                 renderAllViews();
-                triggerToast(`Empleado ${emp.name} desvinculado de la plantilla`, "gold");
+                triggerToast(`Empleado ${emp.name} desvinculado`, "gold");
             }
         }
 
         /* ==========================================
-           MONEY & VAULT MANAGEMENT (ADMIN ONLY)
+           MONEY & VAULT MANAGEMENT (ADMIN EXCLUSIVE)
            ========================================== */
         function openEditMoneyModal() {
             if (!checkAdminPermission()) return;
@@ -1545,7 +1717,7 @@
                 cashFlowUSD = newCash;
                 renderAllViews();
                 closeModal("modalEditMoney");
-                triggerToast("Fondos de Bóveda y Caja Chica actualizados por Jules Ortiz", "gold");
+                triggerToast("Valores de Bóveda y Caja Chica actualizados por Jules Ortiz", "gold");
             }
         }
 
@@ -1574,7 +1746,7 @@
                 watch.status = 'Vendido';
                 renderAllViews();
                 closeModal('modalWatchDetail');
-                triggerToast(`Pieza ${watch.model} marcada como Vendida`, 'gold');
+                triggerToast(`Pieza ${watch.model} asignada como Vendida`, 'gold');
             };
 
             document.getElementById("modalWatchDetail").classList.add("active");
@@ -1592,7 +1764,7 @@
             const price = parseFloat(document.getElementById("newPrice").value);
 
             if (!model || isNaN(price)) {
-                triggerToast("Completa los datos del reloj", "danger");
+                triggerToast("Ingresa los datos requeridos", "danger");
                 return;
             }
 
