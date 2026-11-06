@@ -1154,6 +1154,9 @@
                 <button class="modal-close-btn" onclick="closeModal('modalLogin')">&times;</button>
             </div>
             <div class="modal-body">
+                <div id="lockoutWarning" style="display: none; color: #ef4444; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); padding: 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.85rem; font-weight: 700;">
+                    Cuenta bloqueada por seguridad tras 3 intentos fallidos.
+                </div>
                 <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1.2rem;">
                     Selecciona tu rol e ingresa tu clave de acceso (si aplica) para validar y cambiar los permisos:
                 </p>
@@ -1169,10 +1172,36 @@
                     <label class="form-label">Contraseña de Autenticación</label>
                     <input type="password" id="loginPasswordInput" class="form-input" placeholder="Ingresa tu contraseña..." autocomplete="current-password">
                 </div>
+                <div style="margin-top: 1rem; text-align: right;">
+                    <a href="#" onclick="openRecoveryModal(); return false;" style="color: var(--gold-primary); font-size: 0.8rem; text-decoration: none; font-weight: 600;">¿Olvidaste tu clave / Recuperar acceso?</a>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn-outline-gold" onclick="closeModal('modalLogin')">Cancelar</button>
-                <button class="btn-gold" onclick="processLogin()">Validar e Ingresar</button>
+                <button class="btn-gold" id="btnLoginSubmit" onclick="processLogin()">Validar e Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Recuperar Acceso -->
+    <div class="modal-backdrop" id="modalRecovery">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title">Recuperar Acceso</h3>
+                <button class="modal-close-btn" onclick="closeModal('modalRecovery')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1.2rem;">
+                    Ingresa tu correo electrónico para recibir instrucciones y recuperar el acceso a la plataforma.
+                </p>
+                <div class="form-group">
+                    <label class="form-label">Correo Electrónico</label>
+                    <input type="email" id="recoveryEmailInput" class="form-input" placeholder="ej. usuario@kronojules.com" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-outline-gold" onclick="closeModal('modalRecovery')">Cancelar</button>
+                <button class="btn-gold" onclick="processRecovery()">Enviar Enlace</button>
             </div>
         </div>
     </div>
@@ -1315,6 +1344,9 @@
         let currentCurrency = "USD";
         const exchangeRateMXN = 20.0;
 
+        let failedAttempts = 0;
+        const MAX_ATTEMPTS = 3;
+
         let vaultTotalUSD = 1850000;
         let cashFlowUSD = 420000;
 
@@ -1439,41 +1471,86 @@
         }
 
         function openLoginModal() {
-            document.getElementById("loginRoleSelect").value = currentRole;
-            document.getElementById("loginPasswordInput").value = "";
-            togglePasswordInput();
+            if (failedAttempts >= MAX_ATTEMPTS) {
+                document.getElementById("loginPasswordInput").disabled = true;
+                document.getElementById("btnLoginSubmit").disabled = true;
+                document.getElementById("lockoutWarning").style.display = "block";
+            } else {
+                document.getElementById("loginRoleSelect").value = currentRole;
+                document.getElementById("loginPasswordInput").value = "";
+                togglePasswordInput();
+            }
             document.getElementById("modalLogin").classList.add("active");
         }
 
         function processLogin() {
+            if (failedAttempts >= MAX_ATTEMPTS) return;
+
             const roleSelected = document.getElementById("loginRoleSelect").value;
             const passwordInput = document.getElementById("loginPasswordInput").value.trim();
 
             if (roleSelected === "admin") {
                 if (passwordInput === PASSWORDS.ADMIN) {
-                    currentRole = "admin";
-                    updateRoleUI();
-                    closeModal("modalLogin");
+                    handleSuccessfulLogin("admin");
                     triggerToast("Autenticado como Administrador (CEO Jules Ortiz)", "gold");
                 } else {
-                    triggerToast("Contraseña de administrador incorrecta", "danger");
+                    handleFailedLogin();
                 }
             } else if (roleSelected === "employee") {
                 if (passwordInput === PASSWORDS.EMPLOYEE) {
-                    currentRole = "employee";
-                    updateRoleUI();
-                    closeModal("modalLogin");
+                    handleSuccessfulLogin("employee");
                     triggerToast("Autenticado como Empleado KronoJules", "gold");
                 } else {
-                    triggerToast("Contraseña de empleado incorrecta", "danger");
+                    handleFailedLogin();
                 }
             } else {
                 // Default User (No password required)
-                currentRole = "user";
-                updateRoleUI();
-                closeModal("modalLogin");
+                handleSuccessfulLogin("user");
                 triggerToast("Modo Usuario / Cliente activo", "gold");
             }
+        }
+
+        function handleSuccessfulLogin(role) {
+            currentRole = role;
+            failedAttempts = 0;
+            updateRoleUI();
+            closeModal("modalLogin");
+        }
+
+        function handleFailedLogin() {
+            failedAttempts++;
+            if (failedAttempts >= MAX_ATTEMPTS) {
+                document.getElementById("loginPasswordInput").disabled = true;
+                document.getElementById("btnLoginSubmit").disabled = true;
+                document.getElementById("lockoutWarning").style.display = "block";
+                triggerToast("Cuenta bloqueada por seguridad tras 3 intentos.", "danger");
+            } else {
+                triggerToast(`Contraseña incorrecta. Intentos restantes: ${MAX_ATTEMPTS - failedAttempts}`, "danger");
+            }
+        }
+
+        function openRecoveryModal() {
+            closeModal("modalLogin");
+            document.getElementById("recoveryEmailInput").value = "";
+            document.getElementById("modalRecovery").classList.add("active");
+        }
+
+        function processRecovery() {
+            const email = document.getElementById("recoveryEmailInput").value.trim();
+            if (!email) {
+                triggerToast("Por favor ingresa un correo válido", "danger");
+                return;
+            }
+            
+            // Reset lockout
+            failedAttempts = 0;
+            document.getElementById("loginPasswordInput").disabled = false;
+            document.getElementById("btnLoginSubmit").disabled = false;
+            document.getElementById("lockoutWarning").style.display = "none";
+            
+            closeModal("modalRecovery");
+            triggerToast(`Enlace de recuperación enviado a ${email}`, "gold");
+            setTimeout(openLoginModal, 500);
         }
 
         function updateRoleUI() {
@@ -1760,13 +1837,13 @@
 
             // Generate image HTML and force responsive fitting for modal specifically
             let imgHtml = renderWatchImage(watch);
-            imgHtml = imgHtml.replace('<img', '<img style="max-height:220px; max-width:100%; object-fit:contain; filter:drop-shadow(0 10px 20px rgba(0,0,0,0.5));"');
-            imgHtml = imgHtml.replace('<svg', '<svg style="width:160px; height:160px;"');
+            imgHtml = imgHtml.replace('<img', '<img style="max-height: 140px; width: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));"');
+            imgHtml = imgHtml.replace('<svg', '<svg style="width:140px; height:140px;"');
 
             document.getElementById("modalDetailTitle").textContent = `${watch.brand} - ${watch.model}`;
             document.getElementById("modalDetailBody").innerHTML = `
-                <div style="display:flex; justify-content:center; padding:1.5rem; background:rgba(212,175,55,0.04); border-radius:var(--radius-md); margin-bottom:1.5rem; border:1px solid var(--gold-border); min-height:180px;">
-                    <div style="display:flex; align-items:center; justify-content:center;">${imgHtml}</div>
+                <div style="display:flex; justify-content:center; padding:1.5rem; background:rgba(212,175,55,0.04); border-radius:var(--radius-md); margin-bottom:1.5rem; border:1px solid var(--gold-border); min-height:160px; align-items:center;">
+                    ${imgHtml}
                 </div>
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; font-size:0.88rem;">
                     <div><span style="color:var(--text-muted); display:block;">Número de Serie Auditado:</span><strong>${watch.serial}</strong></div>
